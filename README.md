@@ -1,11 +1,11 @@
 # asdf-erlang
 
-Erlang package source for [asdf](https://github.com/HashNuke/asdf)
+Erlang package source for [asdf](https://github.com/HashNuke/asdf) version manager
 
 ## Install
 
 ```
-asdf source-add erlang https://github.com/HashNuke/asdf.git
+asdf source-add erlang https://github.com/HashNuke/asdf-erlang.git
 ```
 
 ## Use
