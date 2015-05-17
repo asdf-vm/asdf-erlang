@@ -1,6 +1,6 @@
 # asdf-erlang
 
-Erlang package source for [asdf](https://github.com/HashNuke/asdf) version manager
+Erlang tool source for [asdf](https://github.com/HashNuke/asdf) version manager
 
 ## Install
 
