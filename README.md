@@ -5,7 +5,7 @@ Erlang plugin for [asdf](https://github.com/HashNuke/asdf) version manager
 ## Install
 
 ```
-asdf source-add erlang https://github.com/HashNuke/asdf-erlang.git
+asdf plugin-add erlang https://github.com/HashNuke/asdf-erlang.git
 ```
 
 ## Use
