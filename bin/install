@@ -80,7 +80,6 @@ os_based_configure_options() {
   if [[ "$operating_system" =~ "Darwin" ]]; then
     exit_if_homebrew_not_installed
 
-    configure_options="$configure_options --enable-darwin-universal"
     local openssl_path=$(homebrew_package_path openssl)
   else
     local openssl_path=/usr
