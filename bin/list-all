@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 versions_list=(
+  18.0
   17.5
   17.4
   17.3
