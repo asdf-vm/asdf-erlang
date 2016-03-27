@@ -9,6 +9,7 @@ versions_list=(
   18.0
   18.1
   18.2.1
+  18.3
 )
 
 versions=""
