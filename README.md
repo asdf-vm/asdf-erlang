@@ -32,7 +32,8 @@ Needed for terminal handling (libc-dev libncurses5 libtinfo-dev libtinfo5 ncurse
 `apt-get -y install libncurses5-dev`
 
 For building with wxWidgets (start observer or debugger!)  
-`apt-get -y install libwxgtk2.8-dev libgl1-mesa-dev libglu1-mesa-dev libpng3`
++ **Linux**: `apt-get -y install libwxgtk2.8-dev libgl1-mesa-dev libglu1-mesa-dev libpng3`
++ **OS X**: `brew install wxmac`
 
 For building ssl (libssh-4 libssl-dev zlib1g-dev)  
 `apt-get -y install libssh-dev`
