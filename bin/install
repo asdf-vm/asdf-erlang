@@ -35,6 +35,22 @@ install_erlang() {
     ./configure $configure_options || exit 1
     make || exit 1
     make install || exit 1
+
+    # I don't know how to install docs for tags
+    if [ "$install_type" = "version" ]; then
+        if install_man_pages; then
+            echo "Downloading manual pages"
+            local source_path=$(get_docs_download_file_path $version $tmp_download_dir)
+            download_docs $version $source_path
+
+            cd $(dirname $source_path)
+            tar zxf $source_path || exit 1
+            cd $(untar_docs_path $install_type $version $tmp_download_dir)
+
+            # Place the `man` directory in the Erlang install
+            mv man $install_path/lib/erlang/man
+        fi
+    fi
   )
 }
 
@@ -109,11 +125,28 @@ untar_path() {
 }
 
 
+untar_docs_path() {
+  local version=$1
+  local tmp_download_dir=$2
+
+  echo "$tmp_download_dir/otp_doc_man_${version}"
+}
+
+
 download_source() {
   local install_type=$1
   local version=$2
   local download_path=$3
   local download_url=$(get_download_url $install_type $version)
+
+  curl -Lo $download_path -C - $download_url
+}
+
+
+download_docs() {
+  local version=$1
+  local download_path=$2
+  local download_url=$(get_docs_download_url $install_type $version)
 
   curl -Lo $download_path -C - $download_url
 }
@@ -129,6 +162,15 @@ get_download_file_path() {
 }
 
 
+get_docs_download_file_path() {
+  local version=$1
+  local tmp_download_dir=$2
+  local pkg_name="otp_doc_man_${version}.tar.gz"
+
+  echo "$tmp_download_dir/$pkg_name"
+}
+
+
 get_download_url() {
   local install_type=$1
   local version=$2
@@ -139,6 +181,40 @@ get_download_url() {
   else
     echo "https://github.com/erlang/otp/archive/${version}.tar.gz"
   fi
+}
+
+
+get_docs_download_url() {
+  local version=$1
+
+  echo "http://www.erlang.org/download/otp_doc_man_${version}.tar.gz"
+}
+
+
+install_man_pages() {
+    OPTIONS=$ASDF_ERLANG_OPTIONS
+
+    while :; do
+        case ${OPTIONS:-} in
+            -n|--no-docs)
+                exit 1
+                ;;
+            --)
+                shift
+                break
+                ;;
+            *)
+                if [ -z "${OPTIONS:-}" ]; then
+                    break
+                else
+                    echo "Unknown option ${OPTIONS:-}"
+                fi
+        esac
+
+        shift
+    done
+
+    exit 0
 }
 
 

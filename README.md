@@ -16,6 +16,8 @@ When installing Erlang using `asdf install`, you can pass custom configure optio
 
 * `ERLANG_CONFIGURE_OPTIONS` - use only your configure options
 * `ERLANG_EXTRA_CONFIGURE_OPTIONS` - append these configure options along with ones that this plugin already uses
+* `ASDF_ERLANG_OPTIONS` - options for asdf-erlang itself. Available options:
+    * `no-docs` - don't download and install the man pages
 
 ## Before `asdf install`
 
