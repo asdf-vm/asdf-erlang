@@ -17,6 +17,10 @@ install_erlang() {
   # running this in a subshell
   # because we don't want to disturb current working dir
   (
+    # GREP_OPTIONS must not set
+    # http://erlang.org/pipermail/erlang-questions/2014-April/078526.html
+    GREP_OPTIONS=""
+
     cd $(dirname $source_path)
     tar zxf $source_path || exit 1
     cd $(untar_path $install_type $version $tmp_download_dir)
