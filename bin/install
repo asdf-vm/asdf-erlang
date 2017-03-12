@@ -39,6 +39,25 @@ install_erlang() {
     ./configure $configure_options || exit 1
     make || exit 1
     make install || exit 1
+
+    # I don't know how to install docs for tags
+    if [ "$install_type" = "version" ]; then
+        if install_man_pages; then
+            echo "Downloading man pages"
+            local source_path=$(get_docs_download_file_path $version $tmp_download_dir)
+            download_docs $version $source_path
+
+            cd $(dirname $source_path)
+            tar -xzvf $source_path || exit 1
+
+            # Place the `man` directory in the Erlang install
+            mv man $install_path/lib/erlang/
+        else
+            echo "Skipping install of man pages"
+        fi
+    else
+        echo "Skipping install of man pages"
+    fi
   )
 }
 
@@ -123,11 +142,29 @@ download_source() {
 }
 
 
+download_docs() {
+  local version=$1
+  local download_path=$2
+  local download_url=$(get_docs_download_url $version)
+
+  curl -Lo $download_path -C - $download_url
+}
+
+
 get_download_file_path() {
   local install_type=$1
   local version=$2
   local tmp_download_dir=$3
   local pkg_name="otp-${install_type}-${version}-src.tar.gz"
+
+  echo "$tmp_download_dir/$pkg_name"
+}
+
+
+get_docs_download_file_path() {
+  local version=$1
+  local tmp_download_dir=$2
+  local pkg_name="otp_doc_man_${version}.tar.gz"
 
   echo "$tmp_download_dir/$pkg_name"
 }
@@ -143,6 +180,34 @@ get_download_url() {
   else
     echo "https://github.com/erlang/otp/archive/${version}.tar.gz"
   fi
+}
+
+
+get_docs_download_url() {
+  local version=$1
+
+  echo "http://www.erlang.org/download/otp_doc_man_${version}.tar.gz"
+}
+
+
+install_man_pages() {
+    OPTIONS=$ASDF_ERLANG_OPTIONS
+
+    while :; do
+        case ${OPTIONS:-} in
+            -n|--no-docs)
+                return 1
+                ;;
+            *)
+                if [ -z "${OPTIONS:-}" ]; then
+                    break
+                fi
+        esac
+
+        shift
+    done
+
+    return 0
 }
 
 
