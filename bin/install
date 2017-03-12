@@ -39,17 +39,20 @@ install_erlang() {
     # I don't know how to install docs for tags
     if [ "$install_type" = "version" ]; then
         if install_man_pages; then
-            echo "Downloading manual pages"
+            echo "Downloading man pages"
             local source_path=$(get_docs_download_file_path $version $tmp_download_dir)
             download_docs $version $source_path
 
             cd $(dirname $source_path)
-            tar zxf $source_path || exit 1
-            cd $(untar_docs_path $install_type $version $tmp_download_dir)
+            tar -xzvf $source_path || exit 1
 
             # Place the `man` directory in the Erlang install
-            mv man $install_path/lib/erlang/man
+            mv man $install_path/lib/erlang/
+        else
+            echo "Skipping install of man pages"
         fi
+    else
+        echo "Skipping install of man pages"
     fi
   )
 }
@@ -125,14 +128,6 @@ untar_path() {
 }
 
 
-untar_docs_path() {
-  local version=$1
-  local tmp_download_dir=$2
-
-  echo "$tmp_download_dir/otp_doc_man_${version}"
-}
-
-
 download_source() {
   local install_type=$1
   local version=$2
@@ -146,7 +141,7 @@ download_source() {
 download_docs() {
   local version=$1
   local download_path=$2
-  local download_url=$(get_docs_download_url $install_type $version)
+  local download_url=$(get_docs_download_url $version)
 
   curl -Lo $download_path -C - $download_url
 }
@@ -197,24 +192,18 @@ install_man_pages() {
     while :; do
         case ${OPTIONS:-} in
             -n|--no-docs)
-                exit 1
-                ;;
-            --)
-                shift
-                break
+                return 1
                 ;;
             *)
                 if [ -z "${OPTIONS:-}" ]; then
                     break
-                else
-                    echo "Unknown option ${OPTIONS:-}"
                 fi
         esac
 
         shift
     done
 
-    exit 0
+    return 0
 }
 
 
