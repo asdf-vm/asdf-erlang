@@ -37,7 +37,7 @@ install_erlang() {
 
     echo "Building with options: $configure_options"
     ./configure $configure_options || exit 1
-    make || exit 1
+    make -j$ASDF_CONCURRENCY || exit 1
     make install || exit 1
 
     # I don't know how to install docs for tags
