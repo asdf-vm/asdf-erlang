@@ -92,9 +92,11 @@ os_based_configure_options() {
   local operating_system=$(uname -a)
   local configure_options=""
 
-  if [[ "$operating_system" =~ "Darwin" ]]; then
-    local homebrew_openssl_path=$(homebrew_package_path openssl)
-    local openssl_path=${homebrew_openssl_path:-/usr}
+  if [ "$ERLANG_OPENSSL_PATH" != "" ]; then
+      local openssl_path="$ERLANG_OPENSSL_PATH"
+  elif [[ "$operating_system" =~ "Darwin" ]]; then
+      local homebrew_openssl_path=$(homebrew_package_path openssl)
+      local openssl_path=${homebrew_openssl_path:-/usr}
   else
     local openssl_path=/usr
   fi
