@@ -80,18 +80,10 @@ construct_configure_options() {
 homebrew_package_path() {
   local package_name=$1
 
-  if [ "$(brew ls --versions $package_name)" = "" ]; then
+  if [ "$(brew ls --versions $package_name 2> /dev/null)" = "" ]; then
     echo ""
   else
-    echo "$(brew --prefix $package_name)"
-  fi
-}
-
-
-exit_if_homebrew_not_installed() {
-  if [ "$(brew --version 2>/dev/null)" = "" ]; then
-    echo "ERROR: Please install homebrew for OSX"
-    exit 1
+    echo "$(brew --prefix $package_name 2> /dev/null)"
   fi
 }
 
@@ -101,9 +93,8 @@ os_based_configure_options() {
   local configure_options=""
 
   if [[ "$operating_system" =~ "Darwin" ]]; then
-    exit_if_homebrew_not_installed
-
-    local openssl_path=$(homebrew_package_path openssl)
+    local homebrew_openssl_path=$(homebrew_package_path openssl)
+    local openssl_path=${homebrew_openssl_path:-/usr}
   else
     local openssl_path=/usr
   fi
