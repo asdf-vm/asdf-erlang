@@ -12,7 +12,7 @@ install_erlang() {
   fi
 
   local source_path=$(get_download_file_path $install_type $version $tmp_download_dir)
-  download_source $install_type $version $source_path
+  download_source $install_type $version $source_path || return 1
 
   # running this in a subshell
   # because we don't want to disturb current working dir
