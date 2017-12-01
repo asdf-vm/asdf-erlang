@@ -59,6 +59,11 @@ install_erlang() {
     else
         echo "Skipping install of man pages"
     fi
+    
+    # Link other executables to the bin directory so that asdf shims are created for them
+    cd "$install_path/bin"
+    ln -s ../lib/erlang/lib/*/priv/bin/* .
+    ln -s ../lib/erlang/lib/*/bin/* .
   )
 }
 
