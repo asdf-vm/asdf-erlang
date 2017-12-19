@@ -22,7 +22,7 @@ install_erlang() {
     GREP_OPTIONS=""
 
     cd $(dirname $source_path)
-    tar zxf $source_path || exit 1
+    tar xvf $source_path || exit 1
     cd $(untar_path $install_type $version $tmp_download_dir)
 
     if [ "$install_type" != "version" ]
@@ -49,7 +49,7 @@ install_erlang() {
             download_docs $version $source_path
 
             cd $(dirname $source_path)
-            tar -xzvf $source_path || exit 1
+            tar xvf $source_path || exit 1
 
             # Place the `man` directory in the Erlang install
             mv man $install_path/lib/erlang/
@@ -136,7 +136,7 @@ untar_path() {
   then
     echo "$tmp_download_dir/otp_src_${version}"
   else
-    echo "$tmp_download_dir/otp-${version}"
+    echo "$tmp_download_dir/otp-OTP-${version}"
   fi
 }
 
@@ -187,7 +187,7 @@ get_download_url() {
   then
     echo "http://www.erlang.org/download/otp_src_${version}.tar.gz"
   else
-    echo "https://github.com/erlang/otp/archive/${version}.tar.gz"
+    echo "https://github.com/erlang/otp/archive/OTP-${version}.tar.gz"
   fi
 }
 
