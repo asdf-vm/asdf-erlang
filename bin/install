@@ -1,72 +1,103 @@
 #!/usr/bin/env bash
 
+set -e
+
+source "$(dirname $0)/utils.sh"
+
 install_erlang() {
-  local install_type=$1
-  local version=$2
-  local install_path=$3
+  update_available_versions
 
-  if [ "$TMPDIR" = "" ]; then
-    local tmp_download_dir=$(mktemp -d -t erlang_build_XXXXXX)
-  else
-    local tmp_download_dir=$TMPDIR
-  fi
+  export MAKEFLAGS="-j$ASDF_CONCURRENCY"
+  $(kerl_path) build "$ASDF_INSTALL_VERSION" "asdf_$ASDF_INSTALL_VERSION"
+  $(kerl_path) install "asdf_$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+  $(kerl_path) cleanup "$ASDF_INSTALL_VERSION"
 
-  local source_path=$(get_download_file_path $install_type $version $tmp_download_dir)
-  download_source $install_type $version $source_path || return 1
+  link_app_executables $ASDF_INSTALL_PATH
+  echo
+  echo "Erlang $ASDF_INSTALL_VERSION has been installed. Activate globally with:"
+  echo
+  echo "    asdf global erlang $ASDF_INSTALL_VERSION"
+  echo
+  echo "Activate locally in the current folder with:"
+  echo
+  echo "    asdf local erlang $ASDF_INSTALL_VERSION"
+  echo
+}
 
-  # running this in a subshell
-  # because we don't want to disturb current working dir
-  (
-    # GREP_OPTIONS must not set
-    # http://erlang.org/pipermail/erlang-questions/2014-April/078526.html
-    GREP_OPTIONS=""
+install_erlang
 
-    cd $(dirname $source_path)
-    tar zxf $source_path || exit 1
-    cd $(untar_path $install_type $version $tmp_download_dir)
+#install_erlang() {
+#  local install_type=$1
+#  local version=$2
+#  local install_path=$3
+#
+#  if [ "$TMPDIR" = "" ]; then
+#    local tmp_download_dir=$(mktemp -d -t erlang_build_XXXXXX)
+#  else
+#    local tmp_download_dir=$TMPDIR
+#  fi
+#
+#  local source_path=$(get_download_file_path $install_type $version $tmp_download_dir)
+#  download_source $install_type $version $source_path || return 1
+#
+#  # running this in a subshell
+#  # because we don't want to disturb current working dir
+#  (
+#    # GREP_OPTIONS must not set
+#    # http://erlang.org/pipermail/erlang-questions/2014-April/078526.html
+#    GREP_OPTIONS=""
+#
+#    cd $(dirname $source_path)
+#    tar zxf $source_path || exit 1
+#    cd $(untar_path $install_type $version $tmp_download_dir)
+#
+#    if [ "$install_type" != "version" ]
+#    then
+#      ./otp_build autoconf || exit 1
+#    fi
+#
+#    local configure_options="$(construct_configure_options)"
+#    # set in os_based_configure_options
+#    # we unset it here because echo-ing changes the return value of the function
+#    unset ASDF_PKG_MISSING
+#    local make="$(os_based_make_binary)"
+#
+#    echo "Building with options: $configure_options"
+#    ./configure $configure_options || exit 1
+#    $make -j$ASDF_CONCURRENCY || exit 1
+#    $make install || exit 1
+#
+#    # I don't know how to install docs for tags
+#    if [ "$install_type" = "version" ]; then
+#        if install_man_pages; then
+#            echo "Downloading man pages"
+#            local source_path=$(get_docs_download_file_path $version $tmp_download_dir)
+#            download_docs $version $source_path
+#
+#            cd $(dirname $source_path)
+#            tar -xzvf $source_path || exit 1
+#
+#            # Place the `man` directory in the Erlang install
+#            mv man $install_path/lib/erlang/
+#        else
+#            echo "Skipping install of man pages"
+#        fi
+#    else
+#        echo "Skipping install of man pages"
+#    fi
+#    
+#    link_app_executables $install_path
+#  )
+#}
 
-    if [ "$install_type" != "version" ]
-    then
-      ./otp_build autoconf || exit 1
-    fi
+link_app_executables() {
+    local install_path=$1
 
-    local configure_options="$(construct_configure_options)"
-    # set in os_based_configure_options
-    # we unset it here because echo-ing changes the return value of the function
-    unset ASDF_PKG_MISSING
-    local make="$(os_based_make_binary)"
-
-    echo "Building with options: $configure_options"
-    ./configure $configure_options || exit 1
-    $make -j$ASDF_CONCURRENCY || exit 1
-    $make install || exit 1
-
-    # I don't know how to install docs for tags
-    if [ "$install_type" = "version" ]; then
-        if install_man_pages; then
-            echo "Downloading man pages"
-            local source_path=$(get_docs_download_file_path $version $tmp_download_dir)
-            download_docs $version $source_path
-
-            cd $(dirname $source_path)
-            tar -xzvf $source_path || exit 1
-
-            # Place the `man` directory in the Erlang install
-            mv man $install_path/lib/erlang/
-        else
-            echo "Skipping install of man pages"
-        fi
-    else
-        echo "Skipping install of man pages"
-    fi
-    
     # Link other executables to the bin directory so that asdf shims are created for them
     cd "$install_path/bin"
     ln -s ../lib/erlang/lib/*/priv/bin/* .
     ln -s ../lib/erlang/lib/*/bin/* .
-  )
 }
-
 
 construct_configure_options() {
   if [ "$ERLANG_CONFIGURE_OPTIONS" = "" ]; then
@@ -220,4 +251,4 @@ install_man_pages() {
 }
 
 
-install_erlang $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
+#install_erlang $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
