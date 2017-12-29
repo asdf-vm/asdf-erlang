@@ -35,8 +35,6 @@ install_erlang() {
   link_app_executables $ASDF_INSTALL_PATH
 }
 
-install_erlang
-
 link_app_executables() {
     local install_path=$1
 
@@ -90,3 +88,5 @@ install_man_pages() {
 
     return 0
 }
+
+install_erlang
