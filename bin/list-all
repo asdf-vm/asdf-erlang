@@ -3,8 +3,7 @@
 source "$(dirname $0)/utils.sh"
 
 list_all() {
-    ensure_kerl_installed
-    update_available_versions
+    ensure_kerl_setup
 
     echo "$("$(kerl_path)" list releases | sed -e 's:Run.*::')"
 }
