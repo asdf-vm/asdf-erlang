@@ -30,6 +30,7 @@ set_kerl_env() {
     kerl_home="$(dirname "$(dirname "$0")")/kerl-home"
     mkdir -p "$kerl_home"
     export KERL_BASE_DIR="$kerl_home"
+    export KERL_BUILD_BACKEND="git"
     export KERL_CONFIG="$kerl_home/.kerlrc"
 }
 
