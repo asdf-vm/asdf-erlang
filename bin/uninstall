@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+
+source "$(dirname $0)/utils.sh"
+
+$(kerl_path) delete build "asdf_$ASDF_INSTALL_VERSION"
+$(kerl_path) delete installation "$ASDF_INSTALL_PATH"
+rm -rf "$ASDF_INSTALL_PATH"

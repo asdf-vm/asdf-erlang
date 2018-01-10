@@ -1,6 +1,10 @@
 # asdf-erlang
 
-Erlang plugin for [asdf](https://github.com/asdf-vm/asdf) version manager
+Erlang plugin for [asdf](https://github.com/asdf-vm/asdf) version manager that relies on [kerl](https://github.com/kerl/kerl) for builds.
+
+This plugin aims to combine the best of both worlds by using kerl.
+
+kerl's compatibility and build scripts, together with asdf's easy version switching and support for the .tool-versions file. You do not need to have kerl already installed to use this. The plugin will install it's own version of kerl automatically.
 
 ## Install
 
@@ -10,14 +14,7 @@ asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
 
 ## Use
 
-Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang.
-
-When installing Erlang using `asdf install`, you can pass custom configure options with the following env vars:
-
-* `ERLANG_CONFIGURE_OPTIONS` - use only your configure options
-* `ERLANG_EXTRA_CONFIGURE_OPTIONS` - append these configure options along with ones that this plugin already uses
-* `ASDF_ERLANG_OPTIONS` - options for asdf-erlang itself. Available options:
-    * `no-docs` - don't download and install the man pages
+Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang. See [kerl](https://github.com/kerl/kerl) for customization options. Note that the `KERL_BASE_DIR` and `KERL_CONFIG` environment variables are set by the plugin when it runs kerl so it will not be possible to customize them.
 
 ## Before `asdf install`
 

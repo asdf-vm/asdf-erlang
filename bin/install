@@ -1,155 +1,46 @@
 #!/usr/bin/env bash
 
+set -e
+
+source "$(dirname $0)/utils.sh"
+
 install_erlang() {
-  local install_type=$1
-  local version=$2
-  local install_path=$3
+  ensure_kerl_setup
 
-  if [ "$TMPDIR" = "" ]; then
-    local tmp_download_dir=$(mktemp -d -t erlang_build_XXXXXX)
-  else
-    local tmp_download_dir=$TMPDIR
-  fi
+  export MAKEFLAGS="-j$ASDF_CONCURRENCY"
+  $(kerl_path) build "$ASDF_INSTALL_VERSION" "asdf_$ASDF_INSTALL_VERSION"
+  $(kerl_path) install "asdf_$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+  $(kerl_path) cleanup "$ASDF_INSTALL_VERSION"
 
-  local source_path=$(get_download_file_path $install_type $version $tmp_download_dir)
-  download_source $install_type $version $source_path || return 1
+#    # I don't know how to install docs for tags
+#    if [ "$install_type" = "version" ]; then
+#        if install_man_pages; then
+#            echo "Downloading man pages"
+#            local source_path=$(get_docs_download_file_path $version $tmp_download_dir)
+#            download_docs $version $source_path
+#
+#            cd $(dirname $source_path)
+#            tar -xzvf $source_path || exit 1
+#
+#            # Place the `man` directory in the Erlang install
+#            mv man $install_path/lib/erlang/
+#        else
+#            echo "Skipping install of man pages"
+#        fi
+#    else
+#        echo "Skipping install of man pages"
+#    fi
 
-  # running this in a subshell
-  # because we don't want to disturb current working dir
-  (
-    # GREP_OPTIONS must not set
-    # http://erlang.org/pipermail/erlang-questions/2014-April/078526.html
-    GREP_OPTIONS=""
+  link_app_executables $ASDF_INSTALL_PATH
+}
 
-    cd $(dirname $source_path)
-    tar zxf $source_path || exit 1
-    cd $(untar_path $install_type $version $tmp_download_dir)
+link_app_executables() {
+    local install_path=$1
 
-    if [ "$install_type" != "version" ]
-    then
-      ./otp_build autoconf || exit 1
-    fi
-
-    local configure_options="$(construct_configure_options)"
-    # set in os_based_configure_options
-    # we unset it here because echo-ing changes the return value of the function
-    unset ASDF_PKG_MISSING
-    local make="$(os_based_make_binary)"
-
-    echo "Building with options: $configure_options"
-    ./configure $configure_options || exit 1
-    $make -j$ASDF_CONCURRENCY || exit 1
-    $make install || exit 1
-
-    # I don't know how to install docs for tags
-    if [ "$install_type" = "version" ]; then
-        if install_man_pages; then
-            echo "Downloading man pages"
-            local source_path=$(get_docs_download_file_path $version $tmp_download_dir)
-            download_docs $version $source_path
-
-            cd $(dirname $source_path)
-            tar -xzvf $source_path || exit 1
-
-            # Place the `man` directory in the Erlang install
-            mv man $install_path/lib/erlang/
-        else
-            echo "Skipping install of man pages"
-        fi
-    else
-        echo "Skipping install of man pages"
-    fi
-    
     # Link other executables to the bin directory so that asdf shims are created for them
     cd "$install_path/bin"
-    ln -s ../lib/erlang/lib/*/priv/bin/* .
-    ln -s ../lib/erlang/lib/*/bin/* .
-  )
+    ln -s ../lib/*/bin/* ../lib/*/priv/bin/* .
 }
-
-
-construct_configure_options() {
-  if [ "$ERLANG_CONFIGURE_OPTIONS" = "" ]; then
-    local configure_options="$(os_based_configure_options) --prefix=$install_path"
-
-    if [ "$ERLANG_EXTRA_CONFIGURE_OPTIONS" != "" ]; then
-      configure_options="$configure_options $ERLANG_EXTRA_CONFIGURE_OPTIONS"
-    fi
-  else
-    local configure_options="$ERLANG_CONFIGURE_OPTIONS --prefix=$install_path"
-  fi
-
-  echo "$configure_options"
-}
-
-
-homebrew_package_path() {
-  local package_name=$1
-
-  if [ "$(brew ls --versions $package_name 2> /dev/null)" = "" ]; then
-    echo ""
-  else
-    echo "$(brew --prefix $package_name 2> /dev/null)"
-  fi
-}
-
-
-os_based_make_binary() {
-  local operating_system=$(uname -a)
-  if [[ "$operating_system" =~ "FreeBSD" ]]; then
-    echo "gmake"
-  else
-    echo "make"
-  fi
-}
-
-
-os_based_configure_options() {
-  local operating_system=$(uname -a)
-  local configure_options=""
-
-  if [ "$ERLANG_OPENSSL_PATH" != "" ]; then
-      local openssl_path="$ERLANG_OPENSSL_PATH"
-  elif [[ "$operating_system" =~ "Darwin" ]]; then
-      local homebrew_openssl_path=$(homebrew_package_path openssl)
-      local openssl_path=${homebrew_openssl_path:-/usr}
-  else
-    local openssl_path=/usr
-  fi
-
-  if [ "$openssl_path" = "" ]; then
-    export ASDF_PKG_MISSING="openssl"
-  else
-    configure_options="$configure_options --with-ssl=$openssl_path"
-  fi
-
-  echo $configure_options
-}
-
-
-untar_path() {
-  local install_type=$1
-  local version=$2
-  local tmp_download_dir=$3
-
-  if [ "$install_type" = "version" ]
-  then
-    echo "$tmp_download_dir/otp_src_${version}"
-  else
-    echo "$tmp_download_dir/otp-${version}"
-  fi
-}
-
-
-download_source() {
-  local install_type=$1
-  local version=$2
-  local download_path=$3
-  local download_url=$(get_download_url $install_type $version)
-
-  curl -Lo $download_path -C - $download_url
-}
-
 
 download_docs() {
   local version=$1
@@ -160,35 +51,12 @@ download_docs() {
 }
 
 
-get_download_file_path() {
-  local install_type=$1
-  local version=$2
-  local tmp_download_dir=$3
-  local pkg_name="otp-${install_type}-${version}-src.tar.gz"
-
-  echo "$tmp_download_dir/$pkg_name"
-}
-
-
 get_docs_download_file_path() {
   local version=$1
   local tmp_download_dir=$2
   local pkg_name="otp_doc_man_${version}.tar.gz"
 
   echo "$tmp_download_dir/$pkg_name"
-}
-
-
-get_download_url() {
-  local install_type=$1
-  local version=$2
-
-  if [ "$install_type" = "version" ]
-  then
-    echo "http://www.erlang.org/download/otp_src_${version}.tar.gz"
-  else
-    echo "https://github.com/erlang/otp/archive/${version}.tar.gz"
-  fi
 }
 
 
@@ -219,5 +87,4 @@ install_man_pages() {
     return 0
 }
 
-
-install_erlang $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
+install_erlang
