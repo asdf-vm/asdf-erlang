@@ -32,6 +32,16 @@ install_erlang() {
 #    fi
 
   link_app_executables $ASDF_INSTALL_PATH
+  
+  echo
+  echo "Erlang $ASDF_INSTALL_VERSION has been installed. Activate globally with:"
+  echo
+  echo "    asdf global erlang $ASDF_INSTALL_VERSION"
+  echo
+  echo "Activate locally in the current folder with:"
+  echo
+  echo "    asdf local erlang $ASDF_INSTALL_VERSION"
+  echo
 }
 
 link_app_executables() {
