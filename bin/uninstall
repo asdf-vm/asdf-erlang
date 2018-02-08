@@ -6,6 +6,12 @@ source "$(dirname $0)/utils.sh"
 
 ensure_kerl_setup
 
-$(kerl_path) delete build "asdf_$ASDF_INSTALL_VERSION"
-$(kerl_path) delete installation "$ASDF_INSTALL_PATH"
-rm -rf "$ASDF_INSTALL_PATH"
+# Remove the installation and build if the installation was done by kerl
+if $(kerl_path) list installation | grep "$ASDF_INSTALL_PATH"; then
+    $(kerl_path) delete build "asdf_$ASDF_INSTALL_VERSION"
+    $(kerl_path) delete installation "$ASDF_INSTALL_PATH"
+fi
+
+# Finally make sure the directory is actually removed regardless of what the
+# previous kerl commands did
+rm -rf "$ASDF_INSTALL_PATH" || true
