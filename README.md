@@ -14,7 +14,14 @@ asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
 
 ## Use
 
-Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang. See [kerl](https://github.com/kerl/kerl) for customization options. Note that the `KERL_BASE_DIR` and `KERL_CONFIG` environment variables are set by the plugin when it runs kerl so it will not be possible to customize them.
+Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang. To specify custom options you can set environment variables just as you would when using kerl. For example, to skip the java dependency during installation use:
+
+```
+$ export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
+$ asdf install erlang <version>
+```
+  
+See [kerl](https://github.com/kerl/kerl) for the complete list of customization options. Note that the `KERL_BASE_DIR` and `KERL_CONFIG` environment variables are set by the plugin when it runs kerl so it will not be possible to customize them. 
 
 ## Before `asdf install`
 
