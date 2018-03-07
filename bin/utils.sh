@@ -1,3 +1,5 @@
+KERL_VERSION="1.8.2"
+
 ensure_kerl_setup() {
   set_kerl_env
   ensure_kerl_installed
@@ -7,6 +9,11 @@ ensure_kerl_setup() {
 ensure_kerl_installed() {
     if [ ! -f "$(kerl_path)" ]; then
         download_kerl
+    elif [ "$("$(kerl_path)" version)" != "$KERL_VERSION" ]; then
+        # If the kerl file already exists and the version does not match, remove
+        # it and download the correct version
+        rm "$(kerl_path)"
+        download_kerl
     fi
 }
 
@@ -14,8 +21,7 @@ download_kerl() {
     # Print to stderr so asdf doesn't assume this string is a list of versions
     echo "Downloading kerl..." >&2
 
-    local kerl_version="1.8.1"
-    local kerl_url="https://raw.githubusercontent.com/kerl/kerl/${kerl_version}/kerl"
+    local kerl_url="https://raw.githubusercontent.com/kerl/kerl/${KERL_VERSION}/kerl"
 
     curl -Lso "$(kerl_path)" $kerl_url
     chmod +x "$(kerl_path)"
