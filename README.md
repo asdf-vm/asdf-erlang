@@ -20,11 +20,12 @@ Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to 
 $ export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
 $ asdf install erlang <version>
 ```
-  
-See [kerl](https://github.com/kerl/kerl) for the complete list of customization options. Note that the `KERL_BASE_DIR` and `KERL_CONFIG` environment variables are set by the plugin when it runs kerl so it will not be possible to customize them. 
+
+See [kerl](https://github.com/kerl/kerl) for the complete list of customization options. Note that the `KERL_BASE_DIR` and `KERL_CONFIG` environment variables are set by the plugin when it runs kerl so it will not be possible to customize them.
 
 ## Before `asdf install`
 
+## Ubuntu and Debian
 These steps assume a most recent build of Debian or Ubuntu Linux (currently
 tested on Ubuntu 16.04 LTS, "Xenial Xerus"). Note that if you are using a
 previous version of Linux, you may need a different version of one of the below
@@ -43,11 +44,30 @@ Needed for terminal handling (libc-dev libncurses5 libtinfo-dev libtinfo5 ncurse
 `apt-get -y install libncurses5-dev`
 
 For building with wxWidgets (start observer or debugger!)  
-+ **Linux**: `apt-get -y install libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng3`
-+ **OS X**: `brew install wxmac`
+`apt-get -y install libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng3`
 
 For building ssl (libssh-4 libssl-dev zlib1g-dev)  
 `apt-get -y install libssh-dev`
 
 ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)  
 `apt-get -y install unixodbc-dev`
+
+# Arch Linux
+Provides most of the needed build tools.
+`pacman -S --needed base-devel`
+
+Needed for terminal handling
+`pacman -S curses`
+
+For building with wxWidgets (start observer or debugger!)  
+`pacman -S glu mesa wxgtk2 libpng`
+
+For building ssl  
+`pacman -S libssh`
+
+ODBC support
+`sudo pacman -S unixodbc`
+
+# OSX
+For building with wxWidgets (start observer or debugger!)  
+`brew install wxmac`
