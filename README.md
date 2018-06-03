@@ -52,7 +52,7 @@ For building ssl (libssh-4 libssl-dev zlib1g-dev)
 ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)
 `apt-get -y install unixodbc-dev`
 
-# Arch Linux
+## Arch Linux
 Provides most of the needed build tools.
 `pacman -S --needed base-devel`
 
@@ -68,11 +68,11 @@ For building ssl
 ODBC support
 `sudo pacman -S unixodbc`
 
-# OSX
+## OSX
 For building with wxWidgets (start observer or debugger!)
 `brew install wxmac`
 
-# CentOS
+## CentOS
 
 These steps assume a most recent build of CentOS (currently
 tested on CentOS 7.5 x64)
