@@ -1,5 +1,5 @@
 language: c
-script: asdf plugin-test erlang https://github.com/asdf-vm/asdf-erlang.git
+script: travis_wait asdf plugin-test erlang https://github.com/asdf-vm/asdf-erlang.git
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
   - . asdf/asdf.sh
