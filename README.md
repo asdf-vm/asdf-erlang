@@ -21,6 +21,15 @@ $ export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
 $ asdf install erlang <version>
 ```
 
+You can also install Erlang from git, or provide the url to a fork and build from git.
+
+```
+$ asdf install erlang ref:master
+
+$ export OTP_GITHUB_URL="https://github.com/basho/otp"
+$ asdf install erlang ref:basho
+```
+
 See [kerl](https://github.com/kerl/kerl) for the complete list of customization options. Note that the `KERL_BASE_DIR` and `KERL_CONFIG` environment variables are set by the plugin when it runs kerl so it will not be possible to customize them.
 
 ## Before `asdf install`
