@@ -81,10 +81,10 @@ ODBC support
 For building with wxWidgets (start observer or debugger!)
 `brew install wxmac`
 
-## CentOS
+## CentOS & Fedora
 
 These steps assume a most recent build of CentOS (currently
-tested on CentOS 7.5 x64)
+tested on CentOS 7.5 x64 & Fedora 28 x64)
 
 Install the build tools
 `sudo yum groupinstall -y 'Development Tools'`
@@ -105,7 +105,7 @@ for jinterface
 `sudo yum install -y java-1.8.0-openjdk-devel`
 
 ODBC support
-`sudo yum install -y install libiodbc unixODBC.x86_64 erlang-odbc.x86_64`
+`sudo yum install -y libiodbc unixODBC.x86_64 erlang-odbc.x86_64`
 
 for the documentation to be built
 `sudo yum install -y libxslt`
