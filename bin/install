@@ -7,8 +7,6 @@ source "$(dirname $0)/utils.sh"
 install_erlang() {
   ensure_kerl_setup
 
-  local tmp_download_dir=$(set_tmp_dir)
-
   # tell kerl to build documentattion (html & man pages)
   export KERL_BUILD_DOCS=yes
   
@@ -37,15 +35,6 @@ install_erlang() {
   echo
   echo "    asdf local erlang $asdf_activation_version"
   echo
-}
-
-set_tmp_dir() {
-  if [ "$TMPDIR" = "" ]; then
-    local tmp_download_dir=$(mktemp -d -t erlang_build_XXXXXX)
-  else
-    local tmp_download_dir=$TMPDIR
-  fi
-  echo "$tmp_download_dir"
 }
 
 link_app_executables() {
