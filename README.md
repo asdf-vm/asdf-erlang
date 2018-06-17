@@ -61,6 +61,9 @@ For building ssl (libssh-4 libssl-dev zlib1g-dev)
 ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)
 `apt-get -y install unixodbc-dev`
 
+For building documentation:
+`apt get install xsltproc fop`
+
 ## Arch Linux
 Provides most of the needed build tools.
 `pacman -S --needed base-devel`
