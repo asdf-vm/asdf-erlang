@@ -7,6 +7,9 @@ source "$(dirname $0)/utils.sh"
 install_erlang() {
   ensure_kerl_setup
 
+  # tell kerl to build documentattion (html & man pages)
+  export KERL_BUILD_DOCS=yes
+  
   export MAKEFLAGS="-j$ASDF_CONCURRENCY"
   if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
     local asdf_activation_version="$ASDF_INSTALL_TYPE:$ASDF_INSTALL_VERSION"
@@ -19,24 +22,7 @@ install_erlang() {
   $(kerl_path) install "asdf_$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
   $(kerl_path) cleanup "$ASDF_INSTALL_VERSION"
 
-#    # I don't know how to install docs for tags
-#    if [ "$install_type" = "version" ]; then
-#        if install_man_pages; then
-#            echo "Downloading man pages"
-#            local source_path=$(get_docs_download_file_path $version $tmp_download_dir)
-#            download_docs $version $source_path
-#
-#            cd $(dirname $source_path)
-#            tar -xzvf $source_path || exit 1
-#
-#            # Place the `man` directory in the Erlang install
-#            mv man $install_path/lib/erlang/
-#        else
-#            echo "Skipping install of man pages"
-#        fi
-#    else
-#        echo "Skipping install of man pages"
-#    fi
+  unset KERL_BUILD_DOCS
 
   link_app_executables $ASDF_INSTALL_PATH
   
@@ -57,51 +43,6 @@ link_app_executables() {
     # Link other executables to the bin directory so that asdf shims are created for them
     cd "$install_path/bin"
     ln -s ../lib/*/bin/* ../lib/*/priv/bin/* .
-}
-
-download_docs() {
-  local version=$1
-  local download_path=$2
-  local download_url=$(get_docs_download_url $version)
-
-  curl -Lo $download_path -C - $download_url
-}
-
-
-get_docs_download_file_path() {
-  local version=$1
-  local tmp_download_dir=$2
-  local pkg_name="otp_doc_man_${version}.tar.gz"
-
-  echo "$tmp_download_dir/$pkg_name"
-}
-
-
-get_docs_download_url() {
-  local version=$1
-
-  echo "http://www.erlang.org/download/otp_doc_man_${version}.tar.gz"
-}
-
-
-install_man_pages() {
-    OPTIONS=$ASDF_ERLANG_OPTIONS
-
-    while :; do
-        case ${OPTIONS:-} in
-            -n|--no-docs)
-                return 1
-                ;;
-            *)
-                if [ -z "${OPTIONS:-}" ]; then
-                    break
-                fi
-        esac
-
-        shift
-    done
-
-    return 0
 }
 
 install_erlang
