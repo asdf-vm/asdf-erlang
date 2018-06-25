@@ -62,7 +62,7 @@ ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)
 `apt-get -y install unixodbc-dev`
 
 For building documentation:
-`apt get install xsltproc fop`
+`apt-get install xsltproc fop`
 
 ## Arch Linux
 Provides most of the needed build tools.
