@@ -6,3 +6,5 @@ before_script:
 os:
   - linux
   - osx
+install:
+  - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get install -y xsltproc fop; fi
