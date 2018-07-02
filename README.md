@@ -81,6 +81,10 @@ ODBC support
 `sudo pacman -S unixodbc`
 
 ## OSX
+
+Install the build tools
+`brew install autoconf`
+
 For building with wxWidgets (start observer or debugger!)
 `brew install wxmac`
 
