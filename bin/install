@@ -6,9 +6,6 @@ source "$(dirname $0)/utils.sh"
 
 install_erlang() {
   ensure_kerl_setup
-
-  # tell kerl to build documentattion (html & man pages)
-  export KERL_BUILD_DOCS=yes
   
   export MAKEFLAGS="-j$ASDF_CONCURRENCY"
   if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
