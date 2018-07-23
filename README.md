@@ -119,7 +119,7 @@ for the documentation to be built
 
 ## Getting Erlang documentation
 
-Erlang may come with documentation included (as man pages, pdfs and html files). This allows typing `erl -man mnesia` to get info on `mnesia` module. asdf-erlang uses kerl behind, and [kerl](https://github.com/kerl/kerl) is capable of building the docs for specified version of Erlang. 
+Erlang may come with documentation included (as man pages, pdfs and html files). This allows typing `erl -man mnesia` to get info on `mnesia` module. asdf-erlang uses kerl for builds, and [kerl](https://github.com/kerl/kerl) is capable of building the docs for specified version of Erlang. 
 
 For kerl to be able to build Erlang documentation two requirements have to be met:
 1. `KERL_BUILD_DOCS` environment variable has to be set
