@@ -116,3 +116,25 @@ ODBC support
 
 for the documentation to be built
 `sudo yum install -y libxslt`
+
+## Getting Erlang documentation
+
+Erlang may come with documentation included (as man pages, pdfs and html files). This allows typing `erl -man mnesia` to get info on `mnesia` module. asdf-erlang uses kerl behind, and [kerl](https://github.com/kerl/kerl) is capable of building the docs for specified version of Erlang. 
+
+For kerl to be able to build Erlang documentation two requirements have to be met:
+1. `KERL_BUILD_DOCS` environment variable has to be set
+2. Additional dependencies have to be installed. For detailed list of dependencies for your OS please refer to the specific section above
+
+**Note:** Environment variable has to be set before `asdf install erlang <version>` is executed, to take effect.
+
+### Setting the environment variable in bash
+
+Type: `export KERL_BUILD_DOCS=yes` to create `KERL_BUILD_DOCS` environment variable and set it to `true`. This line could be added to your `.bashrc` in case you want `KERL_BUILD_DOCS` to be set for future (future installations of Erlang). 
+
+To remove environment variable: `unset KERL_BUILD_DOCS`.
+
+### Setting the environment variable in fish shell
+
+Type: `set -xg KERL_BUILD_DOCS yes` to set environment variable. In case you want it to be persisted between sessions (machine reboots - for example for future installations) type `set -xU KERL_BUILD_DOCS yes`.
+
+To remove environment variable type: `set -e KERL_BUILD_DOCS`.
