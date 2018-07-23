@@ -19,8 +19,6 @@ install_erlang() {
   $(kerl_path) install "asdf_$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
   $(kerl_path) cleanup "$ASDF_INSTALL_VERSION"
 
-  unset KERL_BUILD_DOCS
-
   link_app_executables $ASDF_INSTALL_PATH
   
   echo
