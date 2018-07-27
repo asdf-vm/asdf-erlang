@@ -16,8 +16,14 @@ install_erlang() {
     $(kerl_path) build "$ASDF_INSTALL_VERSION" "asdf_$ASDF_INSTALL_VERSION"
   fi
 
+  export KERL_INSTALL_MANPAGES=yes
+  export KERL_INSTALL_HTMLDOCS=yes
+
   $(kerl_path) install "asdf_$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
   $(kerl_path) cleanup "$ASDF_INSTALL_VERSION"
+
+  unset KERL_INSTALL_MANPAGES
+  unset KERL_INSTALL_HTMLDOCS
 
   link_app_executables $ASDF_INSTALL_PATH
   
