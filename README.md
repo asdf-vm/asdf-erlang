@@ -69,7 +69,7 @@ Provides most of the needed build tools.
 `pacman -S --needed base-devel`
 
 Needed for terminal handling
-`pacman -S curses`
+`pacman -S ncurses`
 
 For building with wxWidgets (start observer or debugger!)
 `pacman -S glu mesa wxgtk2 libpng`
