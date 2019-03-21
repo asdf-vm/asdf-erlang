@@ -53,7 +53,7 @@ Needed for terminal handling (libc-dev libncurses5 libtinfo-dev libtinfo5 ncurse
 `apt-get -y install libncurses5-dev`
 
 For building with wxWidgets (start observer or debugger!)
-`apt-get -y install libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng3`
+`apt-get -y install libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev`
 
 For building ssl (libssh-4 libssl-dev zlib1g-dev)
 `apt-get -y install libssh-dev`
@@ -63,6 +63,9 @@ ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)
 
 For building documentation:
 `apt-get install xsltproc fop`
+
+If you want to install all the above: 
+`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
 
 ## Arch Linux
 Provides most of the needed build tools.
