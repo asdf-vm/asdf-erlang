@@ -91,6 +91,28 @@ Install the build tools
 For building with wxWidgets (start observer or debugger!)
 `brew install wxmac`
 
+### Dealing with OpenSSL issues on macOS
+
+You may encounter an SSL error with an output along these lines:
+
+```
+crypto : No usable OpenSSL found
+ssh : No usable OpenSSL found
+ssl : No usable OpenSSL found
+```
+
+This issue has been documented [on
+`kerl`](https://github.com/kerl/kerl#compiling-crypto-on-macs). If you see this
+error, you can use the `--with-ssl` flag with a path (in this case, the path is
+`1.0.2p`, you should verify the correct path) before installing Erlang. Here is
+an example that skips the java depency and also sets a specific (and existing)
+path for OpenSSL on macOS.
+
+```
+$ export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=/usr/local/Cellar/openssl/1.0.2p"
+$ asdf install erlang <version>
+```
+
 ## CentOS & Fedora
 
 These steps assume a most recent build of CentOS (currently
@@ -141,25 +163,3 @@ To remove environment variable: `unset KERL_BUILD_DOCS`.
 Type: `set -xg KERL_BUILD_DOCS yes` to set environment variable. In case you want it to be persisted between sessions (machine reboots - for example for future installations) type `set -xU KERL_BUILD_DOCS yes`.
 
 To remove environment variable type: `set -e KERL_BUILD_DOCS`.
-
-### Dealing with OpenSSL issues on macOS
-
-You may encounter an SSL error with an output along these lines:
-
-```
-crypto : No usable OpenSSL found
-ssh : No usable OpenSSL found
-ssl : No usable OpenSSL found
-```
-
-This issue has been documented [on
-`kerl`](https://github.com/kerl/kerl#compiling-crypto-on-macs). If you see this
-error, you can use the `--with-ssl` flag with a path (in this case, the path is
-`1.0.2p`, you should verify the correct path) before installing Erlang. Here is
-an example that skips the java depency and also sets a specific (and existing)
-path for OpenSSL on macOS.
-
-```
-$ export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=/usr/local/Cellar/openssl/1.0.2p"
-$ asdf install erlang <version>
-```
