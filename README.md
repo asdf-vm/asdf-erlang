@@ -12,6 +12,8 @@ kerl's compatibility and build scripts, together with asdf's easy version switch
 asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
 ```
 
+Important: Make sure to read the "Before asdf install" section below to install dependencies!
+
 ## Use
 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang. To specify custom options you [can set environment variables just as you would when using kerl](https://github.com/kerl/kerl#kerl_base_dir). For example, to skip the java dependency during installation use:
