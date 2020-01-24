@@ -105,13 +105,12 @@ ssl : No usable OpenSSL found
 
 This issue has been documented [on
 `kerl`](https://github.com/kerl/kerl#compiling-crypto-on-macs). If you see this
-error, you can use the `--with-ssl` flag with a path (in this case, the path is
-`1.0.2p`, you should verify the correct path) before installing Erlang. Here is
-an example that skips the java depency and also sets a specific (and existing)
-path for OpenSSL on macOS.
+error, you can use the `--with-ssl` flag with a path before installing Erlang. Here is
+an example that skips the java dependency and also sets a specific (and existing)
+path for OpenSSL installed via brew on macOS.
 
 ```
-$ export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=/usr/local/Cellar/openssl/1.0.2p"
+$ export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=$(brew --prefix openssl)"
 $ asdf install erlang <version>
 ```
 
