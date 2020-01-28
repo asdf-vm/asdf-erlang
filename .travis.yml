@@ -1,5 +1,5 @@
 language: c
-script: travis_wait asdf plugin-test erlang https://github.com/asdf-vm/asdf-erlang.git
+script: travis_wait asdf plugin-test erlang . --asdf-plugin-gitref $TRAVIS_BRANCH erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().'  -noshell
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
   - . asdf/asdf.sh
