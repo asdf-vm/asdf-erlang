@@ -2,25 +2,31 @@
 
 set -e
 
-source "$(dirname $0)/utils.sh"
+# shellcheck source=../bin/utils.sh
+source "$(dirname "$0")/utils.sh"
 
 install_erlang() {
   ensure_kerl_setup
-  
+  local asdf_activation_version
+  local build_name
+
+  build_name="asdf_$ASDF_INSTALL_VERSION"
+
   export MAKEFLAGS="-j$ASDF_CONCURRENCY"
+
   if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
-    local asdf_activation_version="$ASDF_INSTALL_TYPE:$ASDF_INSTALL_VERSION"
-    $(kerl_path) build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "asdf_$ASDF_INSTALL_VERSION"
+    asdf_activation_version="$ASDF_INSTALL_TYPE:$ASDF_INSTALL_VERSION"
+    $(kerl_path) build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "$build_name"
   else
-    local asdf_activation_version="$ASDF_INSTALL_VERSION"
-    $(kerl_path) build "$ASDF_INSTALL_VERSION" "asdf_$ASDF_INSTALL_VERSION"
+    asdf_activation_version="$ASDF_INSTALL_VERSION"
+    $(kerl_path) build "$ASDF_INSTALL_VERSION" "$build_name"
   fi
 
-  $(kerl_path) install "asdf_$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+  $(kerl_path) install "$build_name" "$ASDF_INSTALL_PATH"
   $(kerl_path) cleanup "$ASDF_INSTALL_VERSION"
 
-  link_app_executables $ASDF_INSTALL_PATH
-  
+  link_app_executables "$ASDF_INSTALL_PATH"
+
   echo
   echo "Erlang $ASDF_INSTALL_VERSION has been installed. Activate globally with:"
   echo
