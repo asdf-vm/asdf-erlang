@@ -37,37 +37,14 @@ See [kerl](https://github.com/kerl/kerl) for the complete list of customization 
 ## Before `asdf install`
 
 ## Ubuntu and Debian
+
 These steps assume a most recent build of Debian or Ubuntu Linux (currently
-tested on Ubuntu 16.04 LTS, "Xenial Xerus"). Note that if you are using a
+tested on Ubuntu 20.04 LTS). Note that if you are using a
 previous version of Linux, you may need a different version of one of the below
 libraries.
 
-Install the build tools (dpkg-dev g++ gcc libc6-dev make)
-`apt-get -y install build-essential`
-
-Automatic configure script builder (debianutils m4 perl)
-`apt-get -y install autoconf`
-
-Needed for HiPE (native code) support, but already installed by autoconf
-`apt-get -y install m4`
-
-Needed for terminal handling (libc-dev libncurses5 libtinfo-dev libtinfo5 ncurses-bin)
-`apt-get -y install libncurses5-dev`
-
-For building with wxWidgets (start observer or debugger!)
-`apt-get -y install libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev`
-
-For building ssl (libssh-4 libssl-dev zlib1g-dev)
-`apt-get -y install libssh-dev`
-
-ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)
-`apt-get -y install unixodbc-dev`
-
-For building documentation:
-`apt-get install xsltproc fop`
-
-If you want to install all the above: 
-`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
+To install all build dependencies so that the erlang build succeeds without errors:
+`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
 ## Arch Linux
 Provides most of the needed build tools.
