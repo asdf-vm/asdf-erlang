@@ -1,4 +1,4 @@
-KERL_VERSION="1.8.7"
+KERL_VERSION="2.0.0"
 
 ensure_kerl_setup() {
   set_kerl_env
