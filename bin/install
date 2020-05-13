@@ -43,7 +43,9 @@ link_app_executables() {
 
     # Link other executables to the bin directory so that asdf shims are created for them
     cd "$install_path/bin"
-    ln -s ../lib/*/bin/* ../lib/*/priv/bin/* .
+    
+    # ln call may fail if multiple executables are found with the same name
+    ln -s ../lib/*/bin/* ../lib/*/priv/bin/* . || true
 }
 
 install_erlang
