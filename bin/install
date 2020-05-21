@@ -14,6 +14,9 @@ install_erlang() {
 
   export MAKEFLAGS="-j$ASDF_CONCURRENCY"
 
+  $(kerl_path) delete installation "$build_name" || true
+  $(kerl_path) delete build "$build_name" || true
+
   if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
     asdf_activation_version="$ASDF_INSTALL_TYPE:$ASDF_INSTALL_VERSION"
     $(kerl_path) build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "$build_name"
