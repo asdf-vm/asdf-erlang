@@ -146,23 +146,42 @@ for the documentation to be built
 ## Solus
 
 Install the build tools
-`sudo eopkg it -c system.devel`
+
+```bash
+sudo eopkg it -c system.devel
+```
 
 For building wxWidgets
-`sudo eopkg install wxwidgets-devel mesalib-devel libglu-devel`
+
+```bash
+sudo eopkg install wxwidgets-devel \
+                    mesalib-devel 
+                    libglu-devel
+```
 
 For ODBC support
-`sudo eopkg install unixodbc-devel`
+
+```bash
+sudo eopkg install unixodbc-devel
+```
 
 For jinterface
-`sudo eopkg install openjdk-8-devel`
+
+```bash
+sudo eopkg install openjdk-8 \
+                   openjdk-8-devel
+```
 
 If you want to install all of the above
 
 ```bash
 sudo eopkg it -c system.devel
 
-sudo eopkg install wxwidgets-devel mesalib-devel libglu-devel unixodbc-devel openjdk-8-devel
+sudo eopkg install wxwidgets-devel \ 
+                   mesalib-devel \
+                   libglu-devel \
+                   unixodbc-devel \
+                   openjdk-8-devel
 ```
 
 ### Dealing with OpenJDK issues on Solus
