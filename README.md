@@ -154,9 +154,7 @@ sudo eopkg it -c system.devel
 For building wxWidgets
 
 ```bash
-sudo eopkg install wxwidgets-devel \
-                    mesalib-devel 
-                    libglu-devel
+sudo eopkg install wxwidgets-devel mesalib-devel libglu-devel fop
 ```
 
 For ODBC support
@@ -168,24 +166,19 @@ sudo eopkg install unixodbc-devel
 For jinterface
 
 ```bash
-sudo eopkg install openjdk-8 \
-                   openjdk-8-devel
+sudo eopkg install openjdk-8 openjdk-8-devel
 ```
 
 If you want to install all of the above
 
 ```bash
+# Install build tools
 sudo eopkg it -c system.devel
 
-sudo eopkg install wxwidgets-devel \ 
-                   mesalib-devel \
-                   libglu-devel \
-                   unixodbc-devel \
-                   openjdk-8 \
-                   openjdk-8-devel
+sudo eopkg install wxwidgets-devel mesalib-devel libglu-devel fop unixodbc-devel openjdk-8 openjdk-8-devel
 ```
 
-### Dealing with OpenJDK issues on Solus
+### OpenJDK issues on Solus
 
 I ran into an issue where `javac` wasn't a recognized command in the terminal despite having installed `openjdk-8` and `openjdk-8-devel`. Turns out it wasn't added to `PATH` by default. So simply add it to `PATH` like so:
 
