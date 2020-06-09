@@ -37,16 +37,14 @@ See [kerl](https://github.com/kerl/kerl) for the complete list of customization 
 ## Before `asdf install`
 
 ## Ubuntu and Debian
-These steps assume a most recent build of Debian or Ubuntu Linux (currently
-tested on Ubuntu 16.04 LTS, "Xenial Xerus"). Note that if you are using a
-previous version of Linux, you may need a different version of one of the below
+
+Note that if you are using a previous version of Linux, you may need a different version of one of the below
 libraries.
 
-Install the build tools (dpkg-dev g++ gcc libc6-dev make)
-`apt-get -y install build-essential`
+### Ubuntu 16.04 LTS "Xenial Xerus"
 
-Automatic configure script builder (debianutils m4 perl)
-`apt-get -y install autoconf`
+Install the build tools (dpkg-dev g++ gcc libc6-dev make debianutils m4 perl) 
+`apt-get -y install build-essential autoconf`
 
 Needed for HiPE (native code) support, but already installed by autoconf
 `apt-get -y install m4`
@@ -68,6 +66,11 @@ For building documentation:
 
 If you want to install all the above: 
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
+
+### Ubuntu 20.04 LTS
+
+If you want to install all the above: 
+`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
 ## Arch Linux
 Provides most of the needed build tools.
