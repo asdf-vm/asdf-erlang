@@ -141,10 +141,10 @@ for jinterface
 `sudo yum install -y java-1.8.0-openjdk-devel`
 
 ODBC support
-`sudo yum install -y libiodbc unixODBC.x86_64 erlang-odbc.x86_64`
+`sudo yum install -y libiodbc unixODBC-devel.x86_64 erlang-odbc.x86_64`
 
 for the documentation to be built
-`sudo yum install -y libxslt`
+`sudo yum install -y libxslt fop`
 
 ## Solus
 
