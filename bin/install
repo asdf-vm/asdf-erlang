@@ -13,6 +13,7 @@ install_erlang() {
   build_name="asdf_$ASDF_INSTALL_VERSION"
 
   export MAKEFLAGS="-j$ASDF_CONCURRENCY"
+  export KERL_BUILD_DOCS=yes # for OTP23 doc-chunks
 
   $(kerl_path) delete installation "$build_name" || true
   $(kerl_path) delete build "$build_name" || true
