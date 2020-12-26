@@ -90,6 +90,8 @@ ODBC support
 
 ## OSX
 
+Warning: 22.3.1 is the earliest version that can be installed through `kerl` (and, therefore, `asdf`). Earlier versions will fail to compile. See [this issue](https://github.com/kerl/kerl/issues/335#issuecomment-605487028) for details.
+
 Install the build tools
 `brew install autoconf`
 
