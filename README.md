@@ -9,7 +9,7 @@ kerl's compatibility and build scripts, together with asdf's easy version switch
 ## Install
 
 ```
-asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
+asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
 ```
 
 Important: Make sure to read the "Before asdf install" section below to install dependencies!
