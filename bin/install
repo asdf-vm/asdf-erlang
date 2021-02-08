@@ -51,4 +51,8 @@ link_app_executables() {
     ln -s ../lib/*/bin/* ../lib/*/priv/bin/* . || true
 }
 
-install_erlang
+print_failure_message() {
+  printf 'Failed to install Erlang. See previous output for more details.\n'
+}
+
+install_erlang || print_failure_message

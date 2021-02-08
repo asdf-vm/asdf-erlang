@@ -1,9 +1,9 @@
 KERL_VERSION="2.1.2"
 
 ensure_kerl_setup() {
-  set_kerl_env
-  ensure_kerl_installed
-  update_available_versions
+  set_kerl_env || printf 'Failed to set kerl environment\n'
+  ensure_kerl_installed || printf 'Failed to install kerl\n'
+  update_available_versions || printf 'Failed to update available versions\n'
 }
 
 ensure_kerl_installed() {
