@@ -44,46 +44,46 @@ libraries.
 ### Ubuntu 16.04 LTS "Xenial Xerus"
 
 Install the build tools (dpkg-dev g++ gcc libc6-dev make debianutils m4 perl) 
-`apt-get -y install build-essential autoconf`
+`sudo apt-get -y install build-essential autoconf`
 
 Needed for HiPE (native code) support, but already installed by autoconf
-`apt-get -y install m4`
+`sudo apt-get -y install m4`
 
 Needed for terminal handling (libc-dev libncurses5 libtinfo-dev libtinfo5 ncurses-bin)
-`apt-get -y install libncurses5-dev`
+`sudo apt-get -y install libncurses5-dev`
 
 For building with wxWidgets (start observer or debugger!)
-`apt-get -y install libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev`
+`sudo apt-get -y install libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev`
 
 For building ssl (libssh-4 libssl-dev zlib1g-dev)
-`apt-get -y install libssh-dev`
+`sudo apt-get -y install libssh-dev`
 
 ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)
-`apt-get -y install unixodbc-dev`
+`sudo apt-get -y install unixodbc-dev`
 
 For building documentation:
-`apt-get install xsltproc fop`
+`sudo apt-get install xsltproc fop`
 
 If you want to install all the above: 
-`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
+`sudo apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
 
 ### Ubuntu 20.04 LTS
 
 If you want to install all the above: 
-`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
+`sudo apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
 ## Arch Linux
 Provides most of the needed build tools.
-`pacman -S --needed base-devel`
+`sudo pacman -S --needed base-devel`
 
 Needed for terminal handling
-`pacman -S ncurses`
+`sudo pacman -S ncurses`
 
 For building with wxWidgets (start observer or debugger!)
-`pacman -S glu mesa wxgtk2 libpng`
+`sudo pacman -S glu mesa wxgtk2 libpng`
 
 For building ssl
-`pacman -S libssh`
+`sudo pacman -S libssh`
 
 ODBC support
 `sudo pacman -S unixodbc`
