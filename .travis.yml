@@ -1,6 +1,6 @@
 language: c
 script: |-
-  travis_wait asdf plugin-test erlang . --asdf-plugin-gitref $TRAVIS_COMMIT erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), "releases", erlang:system_info(otp_release), "OTP_VERSION"])), io:fwrite(re:replace(Version, "(^\\s+)|(\\s+$)", "", [global,{return,list}])), halt().' -noshell
+  travis_wait 40 asdf plugin-test erlang . --asdf-plugin-gitref $TRAVIS_COMMIT erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), "releases", erlang:system_info(otp_release), "OTP_VERSION"])), io:fwrite(re:replace(Version, "(^\\s+)|(\\s+$)", "", [global,{return,list}])), halt().' -noshell
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
   - . asdf/asdf.sh
