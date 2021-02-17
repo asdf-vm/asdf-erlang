@@ -55,4 +55,10 @@ print_failure_message() {
   printf 'Failed to install Erlang. See previous output for more details.\n'
 }
 
-install_erlang || print_failure_message
+install_erlang && exit_code=$? || exit_code=$?
+
+if [ "$exit_code" -ne 0 ]; then
+  print_failure_message
+fi
+
+exit "$exit_code"
