@@ -1,9 +1,21 @@
 KERL_VERSION="2.1.2"
 
+handle_failure() {
+  function=$1
+  error_message=$2
+  $function && exit_code=$? || exit_code=$?
+
+  if [ "$exit_code" -ne 0 ]; then
+    printf "$error_message"
+  fi
+
+  return "$exit_code"
+}
+
 ensure_kerl_setup() {
-  set_kerl_env || printf 'Failed to set kerl environment\n'
-  ensure_kerl_installed || printf 'Failed to install kerl\n'
-  update_available_versions || printf 'Failed to update available versions\n'
+  handle_failure set_kerl_env 'Failed to set kerl environment\n'
+  handle_failure ensure_kerl_installed 'Failed to install kerl\n'
+  handle_failure update_available_versions 'Failed to update available versions\n'
 }
 
 ensure_kerl_installed() {
