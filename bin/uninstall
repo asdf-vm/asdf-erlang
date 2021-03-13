@@ -2,14 +2,14 @@
 
 set -e
 
-source "$(dirname $0)/utils.sh"
-
+# shellcheck source=../lib/utils.sh
+source "$(dirname $0)/../lib/utils.sh"
 ensure_kerl_setup
 
 # Remove the installation and build if the installation was done by kerl
-if $(kerl_path) list installations | grep "$ASDF_INSTALL_PATH"; then
-    $(kerl_path) delete build "asdf_$ASDF_INSTALL_VERSION"
-    $(kerl_path) delete installation "$ASDF_INSTALL_PATH"
+if $(kerl_executable) list installations | grep "$ASDF_INSTALL_PATH"; then
+    $(kerl_executable) delete build "asdf_$ASDF_INSTALL_VERSION"
+    $(kerl_executable) delete installation "$ASDF_INSTALL_PATH"
 fi
 
 # Finally make sure the directory is actually removed regardless of what the

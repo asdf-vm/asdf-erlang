@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-source "$(dirname $0)/utils.sh"
+# shellcheck source=../lib/utils.sh
+source "$(dirname $0)/../lib/utils.sh"
+ensure_kerl_setup
+
 
 list_all() {
-    ensure_kerl_setup
-
-    echo "$("$(kerl_path)" list releases | sed -e 's:Run.*::' | tr '\n' ' ')"
+    echo "$("$(kerl_executable)" list releases | sed -e 's:Run.*::' | tr '\n' ' ')"
 }
 
 list_all
