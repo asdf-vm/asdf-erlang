@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [ -d "$ASDF_INSTALL_PATH" ]; then
+( 
+ binary_paths="bin lib/*/bin lib/*/priv/bin"
+ cd "$ASDF_INSTALL_PATH"
+ printf '%s ' $binary_paths 
+)
+fi
+

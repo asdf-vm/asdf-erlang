@@ -6,7 +6,7 @@ ensure_kerl_setup
 
 
 list_all() {
-    echo "$("$(kerl_executable)" list releases | sed -e 's:Run.*::' | tr '\n' ' ')"
+  printf "$("$(kerl_executable)" list releases | sed -e 's:Run.*::' | tr '\n' ' ')"
 }
 
 list_all

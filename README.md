@@ -1,10 +1,7 @@
-# asdf-erlang
 
-Erlang plugin for [asdf](https://github.com/asdf-vm/asdf) version manager that relies on [kerl](https://github.com/kerl/kerl) for builds.
+## About
 
-This plugin aims to combine the best of both worlds by using kerl.
-
-kerl's compatibility and build scripts, together with asdf's easy version switching and support for the .tool-versions file. You do not need to have kerl already installed to use this. The plugin will install it's own version of kerl automatically.
+Under the hood, asdf-erlang will use existing [kerl](https://github.com/kerl/kerl) or install it if it's missing.
 
 ## Install
 
@@ -12,38 +9,34 @@ kerl's compatibility and build scripts, together with asdf's easy version switch
 asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
 ```
 
-Important: Make sure to read the "Before asdf install" section below to install dependencies!
+## Requirements
 
-## Use
+### macOS
+* Homebrew
+* Xcode CLI tools
+* openssl
+* wxmac
 
-Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang. To specify custom options you [can set environment variables just as you would when using kerl](https://github.com/kerl/kerl#kerl_base_dir). For example, to skip the java dependency during installation use:
+`brew install openssl wxmac`
 
-```
-$ export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
-$ asdf install erlang <version>
-```
+Addtional dependencies if building from source:
+`brew install autoconf libtool `
 
-You can also install Erlang from git, or provide the url to a fork and build from git.
+macOS will by default try to fetch and use prebuilt.
 
-```
-$ asdf install erlang ref:master
+Note, for macOS 10.15.4 and newer, 22.3.1 is the earliest version that can be built from source. Earlier versions will fail to compile. See [this issue](https://github.com/kerl/kerl/issues/335#issuecomment-605487028) for details.
 
-$ export OTP_GITHUB_URL="https://github.com/basho/otp"
-$ asdf install erlang ref:basho
-```
 
-See [kerl](https://github.com/kerl/kerl) for the complete list of customization options. Note that the `KERL_BASE_DIR` and `KERL_CONFIG` environment variables are set by the plugin when it runs kerl so it will not be possible to customize them.
 
-## Before `asdf install`
-
-## Ubuntu and Debian
+### Ubuntu and Debian
 
 Note that if you are using a previous version of Linux, you may need a different version of one of the below
 libraries.
 
-### Ubuntu 16.04 LTS "Xenial Xerus"
 
-Install the build tools (dpkg-dev g++ gcc libc6-dev make debianutils m4 perl) 
+#### Ubuntu 16.04 LTS "Xenial Xerus"
+
+Install the build tools (dpkg-dev g++ gcc libc6-dev make debianutils m4 perl)
 `apt-get -y install build-essential autoconf`
 
 Needed for HiPE (native code) support, but already installed by autoconf
@@ -64,15 +57,15 @@ ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)
 For building documentation:
 `apt-get install xsltproc fop`
 
-If you want to install all the above: 
+If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
 
-### Ubuntu 20.04 LTS
+#### Ubuntu 20.04 LTS
 
-If you want to install all the above: 
+If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
-## Arch Linux
+#### Arch Linux
 Provides most of the needed build tools.
 `pacman -S --needed base-devel`
 
@@ -88,38 +81,7 @@ For building ssl
 ODBC support
 `sudo pacman -S unixodbc`
 
-## OSX
-
-Note, for MacOS 10.15.4 and newer, 22.3.1 is the earliest version that can be installed through `kerl` (and, therefore, `asdf`). Earlier versions will fail to compile. See [this issue](https://github.com/kerl/kerl/issues/335#issuecomment-605487028) for details.
-
-Install the build tools
-`brew install autoconf`
-
-For building with wxWidgets (start observer or debugger!)
-`brew install wxmac`
-
-### Dealing with OpenSSL issues on macOS
-
-You may encounter an SSL error with an output along these lines:
-
-```
-crypto : No usable OpenSSL found
-ssh : No usable OpenSSL found
-ssl : No usable OpenSSL found
-```
-
-This issue has been documented [on
-`kerl`](https://github.com/kerl/kerl#compiling-crypto-on-macs). If you see this
-error, you can use the `--with-ssl` flag with a path before installing Erlang. Here is
-an example that skips the java dependency and also sets a specific (and existing)
-path for OpenSSL installed via brew on macOS.
-
-```
-$ export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=$(brew --prefix openssl)"
-$ asdf install erlang <version>
-```
-
-## CentOS & Fedora
+#### CentOS & Fedora
 
 These steps assume a most recent build of CentOS (currently
 tested on CentOS 7.5 x64 & Fedora 28 x64)
@@ -148,7 +110,7 @@ ODBC support
 for the documentation to be built
 `sudo yum install -y libxslt fop`
 
-## Solus
+#### Solus
 
 Install the build tools
 
@@ -183,7 +145,7 @@ sudo eopkg it -c system.devel
 sudo eopkg install wxwidgets-devel mesalib-devel libglu-devel fop unixodbc-devel openjdk-8 openjdk-8-devel
 ```
 
-### OpenJDK issues on Solus
+#### OpenJDK issues on Solus
 
 I ran into an issue where `javac` wasn't a recognized command in the terminal despite having installed `openjdk-8` and `openjdk-8-devel`. Turns out it wasn't added to `PATH` by default. So simply add it to `PATH` like so:
 
@@ -196,24 +158,76 @@ PATH=$PATH:$JAVA_HOME/bin
 source ~/.bashrc
 ```
 
-## Getting Erlang documentation
+## Use
 
-Erlang may come with documentation included (as man pages, pdfs and html files). This allows typing `erl -man mnesia` to get info on `mnesia` module. asdf-erlang uses kerl for builds, and [kerl](https://github.com/kerl/kerl) is capable of building the docs for specified version of Erlang. 
+Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang. To specify custom options you [can set environment variables just as you would when using kerl](https://github.com/kerl/kerl#build-configuration).
 
-For kerl to be able to build Erlang documentation two requirements have to be met:
-1. `KERL_BUILD_DOCS` environment variable has to be set
-2. Additional dependencies have to be installed. For detailed list of dependencies for your OS please refer to the specific section above
+### `KERL_CONFIGURE_OPTIONS `
+To use custom build options you could set:
 
-**Note:** Environment variable has to be set before `asdf install erlang <version>` is executed, to take effect.
+```shell
+$ export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
+$ asdf install erlang <version>
+```
+By default it will be set to:
 
-### Setting the environment variable in bash
+```shell
+    --disable-debug --disable-silent-rules --enable-dynamic-ssl-lib
+    --enable-hipe --enable-sctp --enable-shared-zlib --enable-smp-support
+    --enable-threads --enable-wx --without-javac
+additional for macOS
+    --with-ssl=$(brew --prefix openssl) --enable-darwin-64bit --enable-kernel-poll --with-dynamic-trace=dtrace
 
-Type: `export KERL_BUILD_DOCS=yes` to create `KERL_BUILD_DOCS` environment variable and set it to `true`. This line could be added to your `.bashrc` in case you want `KERL_BUILD_DOCS` to be set for future (future installations of Erlang). 
+```
 
-To remove environment variable: `unset KERL_BUILD_DOCS`.
+### `OTP_GITHUB_URL`
+To use a different Erlang source from git set the url to a fork:
 
-### Setting the environment variable in fish shell
+```shell
+$ asdf install erlang ref:master
 
-Type: `set -xg KERL_BUILD_DOCS yes` to set environment variable. In case you want it to be persisted between sessions (machine reboots - for example for future installations) type `set -xU KERL_BUILD_DOCS yes`.
+$ export OTP_GITHUB_URL="https://github.com/basho/otp"
+$ asdf install erlang ref:basho
+```
 
-To remove environment variable type: `set -e KERL_BUILD_DOCS`.
+### Opting out of prebuilt for macOS
+
+By default macOS will use prebuilt binaries if they're available but you can opt out by setting any of these:
+* `OTP_GITHUB_URL`,
+* `KERL_CONFIGURE_OPTIONS`
+* `ASDF_ERLANG_FROM_SOURCE`
+
+It will also opt out if `ASDF_INSTALL_TYPE` is `ref`
+
+
+### Opting out of Erlang documentation
+To opt out of building documenation you could set:
+```shell
+export KERL_BUILD_DOCS=NO
+```
+
+Erlang may come with documentation included (as man pages, pdfs and html files). This allows typing `erl -man mnesia` to get info on `mnesia` module. asdf-erlang uses kerl for builds, and [kerl](https://github.com/kerl/kerl) is capable of building the docs for specified version of Erlang.
+
+For kerl to be able to build Erlang documentation requirements have to be met with additional dependencies have to be installed. For detailed list of dependencies for your OS please refer to the specific section above.
+
+
+### Use a specific version of Kerl
+
+To use a different version of kerl you could set:
+```shell
+export ASDF_KERL_VERSION="2.1.1"
+```
+
+### Kerl Config
+
+Note that the `KERL_BASE_DIR` and `KERL_CONFIG` environment variables are set by the plugin to:
+```shell
+KERL_BASE_DIR="${ASDF_KERL_BASE_DIR:-${ASDF_DATA_DIR:-$HOME/.asdf}/tmp/$(plugin_name)/kerl}"
+KERL_CONFIG="${KERL_BASE_DIR:-$(kerl_path)}/.kerlrc"
+```
+You can override both.
+
+See [kerl](https://github.com/kerl/kerl#locations-on-disk) for the complete list of customization options.
+
+
+

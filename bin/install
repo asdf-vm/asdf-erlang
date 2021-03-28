@@ -5,110 +5,104 @@ export KERL_BUILD_DOCS="${KERL_BUILD_DOCS:-yes}"
 set -e
 
 
+
 # shellcheck source=../lib/utils.sh
 source "$(dirname $0)/../lib/utils.sh"
 ensure_kerl_setup
 
+
 install_erlang() {
 
+  if [ -z "$OTP_GITHUB_URL" ] && [ "$ASDF_INSTALL_TYPE" = "version" ] && [ -z "$KERL_CONFIGURE_OPTIONS"] && [ -z "$ASDF_ERLANG_FROM_SOURCE" ] && os_name="$(get_macos_marketing_name)"; then
+    if download_url="$(macos_get_download_url $os_name)"; then
+      macos_install_from_prebuilt "$download_url"
+    else
+      printf 'Fallback to building from source. \n'
+      install_from_source
+    fi
+  else
+    install_from_source
+  fi
+}
+
+
+
+macos_install_from_prebuilt() {
+  macos_check_homebrew_setup
+
+  mkdir -p "$ASDF_INSTALL_PATH"
+  mkdir -p "$ASDF_DOWNLOAD_PATH"
+
+  local download_url="$1"
+
+  printf 'Downloading %s. \n' "$download_url"
+  # Strip "erlang/23.3" folder structure off the tarball when extracting.
+  curl -L "$download_url" | tar xf - --directory="$ASDF_DOWNLOAD_PATH" --strip-components=2
+
+  # We're not keeping the same directory structure as Homebrew.
+  local replacement_pattern="@@HOMEBREW_CELLAR@@/erlang/$ASDF_INSTALL_VERSION/lib/erlang"
+
+  # Replace the homebrew URL with something compatible with asdf
+  grep -rl --null "$replacement_pattern" "$ASDF_DOWNLOAD_PATH/lib/erlang" | xargs -0 sed -i '' "s:$replacement_pattern:$ASDF_INSTALL_PATH:g"
+
+  local linked_libs=(
+      "$ASDF_DOWNLOAD_PATH/lib/erlang/lib/"crypto-*"/priv/lib/crypto.so"
+      "$ASDF_DOWNLOAD_PATH/lib/erlang/lib/"wx-*"/priv/wxe_driver.so"
+    )
+
+  # Link Crypto & Wx to brew prefix
+  macos_update_linked_paths "${linked_libs[@]}"
+
+  # Move from download to install
+  # In the future, maybe copy would be better, but I think keeping downloads is a bad design.
+  mv -f "$ASDF_DOWNLOAD_PATH/lib/erlang/"* "$ASDF_INSTALL_PATH"
+}
+
+
+install_from_source() {
+  printf 'Building version %s %s for from source' "$(plugin_name)" "$ASDF_INSTALL_VERSION"
+  if [ "$KERL_BUILD_DOCS" != "yes" ]; then
+    unset KERL_BUILD_DOCS
+    printf ' without documentation. \n'
+  else
+    printf ' with documentation. \n'
+  fi
 
   if [ -z "$KERL_CONFIGURE_OPTIONS" ]; then
-    echo "KERL_CONFIGURE_OPTIONS is not set, will use default settings."
+    printf 'KERL_CONFIGURE_OPTIONS is not set, will use default settings. \n'
 
     export KERL_CONFIGURE_OPTIONS="--disable-debug --disable-silent-rules --enable-dynamic-ssl-lib"
     export KERL_CONFIGURE_OPTIONS="$KERL_CONFIGURE_OPTIONS --enable-hipe --enable-sctp --enable-shared-zlib --enable-smp-support"
     export KERL_CONFIGURE_OPTIONS="$KERL_CONFIGURE_OPTIONS --enable-threads --enable-wx --without-javac"
 
     if [ "$(uname -s)" = "Darwin" ]; then
-      echo "Using Homebrew for dependencies."
-      if [ -x "$(command -v brew)" ]; then
-        if [ ! -d "$(brew --prefix autoconf)" ]; then
-          echo "Missing autoconf from Homebrew"
-          echo "brew install autoconf"
-          exit 1
-        fi
-        if [ ! -d "$(brew --prefix libtool)" ]; then
-          echo "Missing libtool from Homebrew"
-          echo "brew install libtool"
-          exit 1
-        fi
-        if [ ! -d "$(brew --prefix openssl)" ]; then
-          echo "Missing openssl from Homebrew"
-          echo "brew install openssl"
-          exit 1
-        fi
-        if [ ! -d "$(brew --prefix wxmac)" ]; then
-          echo "Missing wxmac from Homebrew"
-          echo "brew install wxmac"
-          exit 1
-        fi
+        macos_check_homebrew_setup "SOURCE"
         export KERL_CONFIGURE_OPTIONS="$KERL_CONFIGURE_OPTIONS --with-ssl=$(brew --prefix openssl) --enable-darwin-64bit --enable-kernel-poll --with-dynamic-trace=dtrace"
-      else
-        echo "Homebrew is not installed or in PATH"
-        echo "To install without Homebrew, set your own KERL_CONFIGURE_OPTIONS"
-      fi
     fi
   fi
 
 
+  printf 'With KERL_CONFIGURE_OPTIONS set to: \n %s \n' "$KERL_CONFIGURE_OPTIONS"
 
 
-
-
-  echo "Installing Erlang $ASDF_INSTALL_VERSION"
-  if [ "$KERL_BUILD_DOCS" != "yes" ]; then
-    unset KERL_BUILD_DOCS
-    echo "without documentation"
-  else
-    echo "with documentation"
-  fi
-  echo "With KERL_CONFIGURE_OPTIONS set to: "
-  echo "$KERL_CONFIGURE_OPTIONS"
-  echo "---"
-
-  local asdf_activation_version
-  local build_name
-
-  build_name="asdf_$ASDF_INSTALL_VERSION"
+  local build_name="asdf_$ASDF_INSTALL_VERSION"
 
   export MAKEFLAGS="-j$ASDF_CONCURRENCY"
 
-  $(kerl_executable) delete installation "$build_name" || true
-  $(kerl_executable) delete build "$build_name" || true
-
 
   if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
-    asdf_activation_version="$ASDF_INSTALL_TYPE:$ASDF_INSTALL_VERSION"
     $(kerl_executable) build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "$build_name"
   else
-    asdf_activation_version="$ASDF_INSTALL_VERSION"
     $(kerl_executable) build "$ASDF_INSTALL_VERSION" "$build_name"
   fi
 
   $(kerl_executable) install "$build_name" "$ASDF_INSTALL_PATH"
-  $(kerl_executable) cleanup "$ASDF_INSTALL_VERSION"
 
-  link_app_executables "$ASDF_INSTALL_PATH"
+  if [ -z "${ASDF_KERL_BASE_DIR:-}" ]; then
+    rm -rf "$KERL_BASE_DIR"
+  fi
 
-  echo
-  echo "Erlang $ASDF_INSTALL_VERSION has been installed. Activate globally with:"
-  echo
-  echo "    asdf global erlang $asdf_activation_version"
-  echo
-  echo "Activate locally in the current folder with:"
-  echo
-  echo "    asdf local erlang $asdf_activation_version"
-  echo
 }
 
-link_app_executables() {
-    local install_path=$1
-
-    # Link other executables to the bin directory so that asdf shims are created for them
-    cd "$install_path/bin"
-
-    # ln call may fail if multiple executables are found with the same name
-    ln -s ../lib/*/bin/* ../lib/*/priv/bin/* . || true
-}
 
 install_erlang
