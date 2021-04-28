@@ -43,7 +43,7 @@ libraries.
 
 ### Ubuntu 16.04 LTS "Xenial Xerus"
 
-Install the build tools (dpkg-dev g++ gcc libc6-dev make debianutils m4 perl) 
+Install the build tools (dpkg-dev g++ gcc libc6-dev make debianutils m4 perl)
 `apt-get -y install build-essential autoconf`
 
 Needed for HiPE (native code) support, but already installed by autoconf
@@ -64,12 +64,12 @@ ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)
 For building documentation:
 `apt-get install xsltproc fop`
 
-If you want to install all the above: 
+If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
 
 ### Ubuntu 20.04 LTS
 
-If you want to install all the above: 
+If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
 ## Arch Linux
@@ -198,22 +198,66 @@ source ~/.bashrc
 
 ## Getting Erlang documentation
 
-Erlang may come with documentation included (as man pages, pdfs and html files). This allows typing `erl -man mnesia` to get info on `mnesia` module. asdf-erlang uses kerl for builds, and [kerl](https://github.com/kerl/kerl) is capable of building the docs for specified version of Erlang. 
+Erlang may come with documentation included (as man pages, pdfs and html files,
+or even embedded documentation (via `c:h` function)).
+
+For man pages this allows typing `erl -man ets` to get info on `ets` module.
+
+For embedded documentation (on [OTP 23\+](https://www.erlang.org/downloads/23.0))
+via [`c:h`](https://erlang.org/doc/man/c.html#h-1), type the following while in`erl`:
+
+```erlang
+%% Docs for ets module
+h(ets).
+
+%% Docs for function by its name
+h(ets, info).
+
+%% Docs for function by its name and arity
+h(ets, info, 2).
+```
+
+Elixir has them integrated from version 1.7 onwards via
+[`IEx.Helpers.h/1`, or simply `h/1` in IEx](https://hexdocs.pm/iex/IEx.Helpers.html#h/1):
+
+```elixir
+h :ets
+h :ets.new
+h :ets.new/2
+```
+
+`asdf-erlang` uses kerl for builds, and [kerl](https://github.com/kerl/kerl) is
+capable of building the docs for specified version of Erlang in required
+formats.
 
 For kerl to be able to build Erlang documentation two requirements have to be met:
-1. `KERL_BUILD_DOCS` environment variable has to be set
+1. `KERL_BUILD_DOCS` environment variable has to be set (to value `yes`)
 2. Additional dependencies have to be installed. For detailed list of dependencies for your OS please refer to the specific section above
+
+Additionally, HTML and Man formats can be ignored entirely:
+- `KERL_INSTALL_HTMLDOCS` set to `no` to not install HTML docs
+- `KERL_INSTALL_MANPAGES` set to `no` to skip Man pages.
+
+By default, docs in both of these formats are installed if `KERL_BUILD_DOCS` is set.
+
+*It may be a good idea to disable those formats to **save space***, since **docs can easily take around 200MB** in addition to 100MB of base installation, yet to *still have docs inside shell*.
 
 **Note:** Environment variable has to be set before `asdf install erlang <version>` is executed, to take effect.
 
 ### Setting the environment variable in bash
 
-Type: `export KERL_BUILD_DOCS=yes` to create `KERL_BUILD_DOCS` environment variable and set it to `true`. This line could be added to your `.bashrc` in case you want `KERL_BUILD_DOCS` to be set for future (future installations of Erlang). 
+Type: `export KERL_BUILD_DOCS=yes` to create `KERL_BUILD_DOCS` environment variable and set it to `true`.
+Repeat the same for `KERL_INSTALL_HTMLDOCS` `KERL_INSTALL_MANPAGES` if required (see above).
+
+This line could be added to your `.bashrc` in case you want `KERL_BUILD_DOCS` to be set for future (future installations of Erlang).
 
 To remove environment variable: `unset KERL_BUILD_DOCS`.
 
 ### Setting the environment variable in fish shell
 
-Type: `set -xg KERL_BUILD_DOCS yes` to set environment variable. In case you want it to be persisted between sessions (machine reboots - for example for future installations) type `set -xU KERL_BUILD_DOCS yes`.
+Type: `set -xg KERL_BUILD_DOCS yes` to set environment variable.
+Repeat the same for `KERL_INSTALL_HTMLDOCS` `KERL_INSTALL_MANPAGES` if required (see above).
+
+In case you want it to be persisted between sessions (machine reboots - for example for future installations) type `set -xU KERL_BUILD_DOCS yes`.
 
 To remove environment variable type: `set -e KERL_BUILD_DOCS`.
