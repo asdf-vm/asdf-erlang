@@ -204,8 +204,8 @@ or even embedded documentation (via `c:h` function)).
 For man pages this allows typing `erl -man ets` to get info on `ets` module.
 
 For embedded documentation (on [OTP 23\+](https://www.erlang.org/downloads/23.0)):
-- In Erlang's `erl`: via [`c:h/1,2,3`](https://erlang.org/doc/man/c.html#h-1)
-- In Elixir's `iex` (Elixir 1.7+): via [`h/1`](https://hexdocs.pm/iex/IEx.Helpers.html#h/1)
+- In Erlang's `erl`: via [`c:h/1,2,3`](https://erlang.org/doc/man/c.html#h-1) and [`c:ht/1,2,3`](https://erlang.org/doc/man/c.html#ht-1) for types
+- In Elixir's `iex` (Elixir 1.7+): via [`h/1`](https://hexdocs.pm/iex/IEx.Helpers.html#h/1) and [`t/1`](https://hexdocs.pm/iex/IEx.Helpers.html#t/1) for types
 
 `asdf-erlang` uses kerl for builds, and [kerl](https://github.com/kerl/kerl) is
 capable of building the docs for specified version of Erlang in required
