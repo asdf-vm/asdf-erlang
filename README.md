@@ -203,35 +203,16 @@ or even embedded documentation (via `c:h` function)).
 
 For man pages this allows typing `erl -man ets` to get info on `ets` module.
 
-For embedded documentation (on [OTP 23\+](https://www.erlang.org/downloads/23.0))
-via [`c:h`](https://erlang.org/doc/man/c.html#h-1), type the following while in`erl`:
-
-```erlang
-%% Docs for ets module
-h(ets).
-
-%% Docs for function by its name
-h(ets, info).
-
-%% Docs for function by its name and arity
-h(ets, info, 2).
-```
-
-Elixir has them integrated from version 1.7 onwards via
-[`IEx.Helpers.h/1`, or simply `h/1` in IEx](https://hexdocs.pm/iex/IEx.Helpers.html#h/1):
-
-```elixir
-h :ets
-h :ets.new
-h :ets.new/2
-```
+For embedded documentation (on [OTP 23\+](https://www.erlang.org/downloads/23.0)):
+- In Erlang's `erl`: via [`c:h/1,2,3`](https://erlang.org/doc/man/c.html#h-1)
+- In Elixir's `iex` (Elixir 1.7+): via [`h/1`](https://hexdocs.pm/iex/IEx.Helpers.html#h/1)
 
 `asdf-erlang` uses kerl for builds, and [kerl](https://github.com/kerl/kerl) is
 capable of building the docs for specified version of Erlang in required
 formats.
 
 For kerl to be able to build Erlang documentation two requirements have to be met:
-1. `KERL_BUILD_DOCS` environment variable has to be set (to value `yes`)
+1. `KERL_BUILD_DOCS` environment variable has to be set to value `yes`
 2. Additional dependencies have to be installed. For detailed list of dependencies for your OS please refer to the specific section above
 
 Additionally, HTML and Man formats can be ignored entirely:
