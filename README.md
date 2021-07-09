@@ -36,12 +36,12 @@ See [kerl](https://github.com/kerl/kerl) for the complete list of customization 
 
 ## Before `asdf install`
 
-## Ubuntu and Debian
+### Ubuntu and Debian
 
 Note that if you are using a previous version of Linux, you may need a different version of one of the below
 libraries.
 
-### Ubuntu 16.04 LTS "Xenial Xerus"
+#### Ubuntu 16.04 LTS "Xenial Xerus"
 
 Install the build tools (dpkg-dev g++ gcc libc6-dev make debianutils m4 perl)
 `apt-get -y install build-essential autoconf`
@@ -67,12 +67,12 @@ For building documentation:
 If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
 
-### Ubuntu 20.04 LTS
+#### Ubuntu 20.04 LTS
 
 If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
-## Arch Linux
+### Arch Linux
 Provides most of the needed build tools.
 `pacman -S --needed base-devel`
 
@@ -88,17 +88,20 @@ For building ssl
 ODBC support
 `sudo pacman -S unixodbc`
 
-## OSX
+### OSX
 
 Note, for MacOS 10.15.4 and newer, 22.3.1 is the earliest version that can be installed through `kerl` (and, therefore, `asdf`). Earlier versions will fail to compile. See [this issue](https://github.com/kerl/kerl/issues/335#issuecomment-605487028) for details.
 
 Install the build tools
 `brew install autoconf`
 
+Install OpenSSL
+`brew install openssl`
+
 For building with wxWidgets (start observer or debugger!)
 `brew install wxmac`
 
-### Dealing with OpenSSL issues on macOS
+#### Dealing with OpenSSL issues on macOS
 
 You may encounter an SSL error with an output along these lines:
 
@@ -119,7 +122,7 @@ $ export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=$(brew --prefix open
 $ asdf install erlang <version>
 ```
 
-## CentOS & Fedora
+### CentOS & Fedora
 
 These steps assume a most recent build of CentOS (currently
 tested on CentOS 7.5 x64 & Fedora 28 x64)
@@ -148,7 +151,7 @@ ODBC support
 for the documentation to be built
 `sudo yum install -y libxslt fop`
 
-## Solus
+### Solus
 
 Install the build tools
 
@@ -183,7 +186,7 @@ sudo eopkg it -c system.devel
 sudo eopkg install wxwidgets-devel mesalib-devel libglu-devel fop unixodbc-devel openjdk-8 openjdk-8-devel
 ```
 
-### OpenJDK issues on Solus
+#### OpenJDK issues on Solus
 
 I ran into an issue where `javac` wasn't a recognized command in the terminal despite having installed `openjdk-8` and `openjdk-8-devel`. Turns out it wasn't added to `PATH` by default. So simply add it to `PATH` like so:
 
