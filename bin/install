@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-set -e
+# Unoffical Bash "strict mode"
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+#ORIGINAL_IFS=$IFS
+IFS=$'\t\n' # Stricter IFS settings
 
 # shellcheck source=../bin/utils.sh
 source "$(dirname "$0")/utils.sh"
@@ -46,19 +50,9 @@ link_app_executables() {
 
     # Link other executables to the bin directory so that asdf shims are created for them
     cd "$install_path/bin"
-    
+
     # ln call may fail if multiple executables are found with the same name
     ln -s ../lib/*/bin/* ../lib/*/priv/bin/* . || true
 }
 
-print_failure_message() {
-  printf 'Failed to install Erlang. See previous output for more details.\n'
-}
-
-install_erlang && exit_code=$? || exit_code=$?
-
-if [ "$exit_code" -ne 0 ]; then
-  print_failure_message
-fi
-
-exit "$exit_code"
+install_erlang

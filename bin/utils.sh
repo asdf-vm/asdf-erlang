@@ -6,16 +6,16 @@ handle_failure() {
   $function && exit_code=$? || exit_code=$?
 
   if [ "$exit_code" -ne 0 ]; then
-    printf "$error_message"
+    printf "$error_message\\n" 1>&2
   fi
 
   return "$exit_code"
 }
 
 ensure_kerl_setup() {
-  handle_failure set_kerl_env 'Failed to set kerl environment\n'
-  handle_failure ensure_kerl_installed 'Failed to install kerl\n'
-  handle_failure update_available_versions 'Failed to update available versions\n'
+  handle_failure set_kerl_env 'Failed to set kerl environment'
+  handle_failure ensure_kerl_installed 'Failed to install kerl'
+  handle_failure update_available_versions 'Failed to update available versions'
 }
 
 ensure_kerl_installed() {
