@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
-source "$(dirname $0)/utils.sh"
+# Unoffical Bash "strict mode"
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+#ORIGINAL_IFS=$IFS
+IFS=$'\t\n' # Stricter IFS settings
+
+# shellcheck source=../bin/utils.sh
+source "$(dirname "$0")/utils.sh"
 
 list_all() {
     ensure_kerl_setup
 
-    echo "$("$(kerl_path)" list releases | sed -e 's:Run.*::' | tr '\n' ' ')"
+    "$(kerl_path)" list releases | sed -e 's:Run.*::' | tr '\n' ' '
 }
 
 list_all

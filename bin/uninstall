@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
 
-set -e
+# Unoffical Bash "strict mode"
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+#ORIGINAL_IFS=$IFS
+IFS=$'\t\n' # Stricter IFS settings
 
-source "$(dirname $0)/utils.sh"
+# shellcheck source=../bin/utils.sh
+source "$(dirname "$0")/utils.sh"
 
 ensure_kerl_setup
 
 # Remove the installation and build if the installation was done by kerl
 if $(kerl_path) list installations | grep "$ASDF_INSTALL_PATH"; then
-    $(kerl_path) delete build "asdf_$ASDF_INSTALL_VERSION"
-    $(kerl_path) delete installation "$ASDF_INSTALL_PATH"
+    $(kerl_path) delete build "asdf_$ASDF_INSTALL_VERSION" || true
+    $(kerl_path) delete installation "$ASDF_INSTALL_PATH" || true
 fi
 
 # Finally make sure the directory is actually removed regardless of what the
