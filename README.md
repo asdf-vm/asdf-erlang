@@ -162,7 +162,7 @@ sudo eopkg it -c system.devel
 For building wxWidgets
 
 ```bash
-sudo eopkg install wxwidgets-devel mesalib-devel libglu-devel fop
+sudo eopkg install wxwidgets-devel libx11-devel mesalib-devel libglu-devel fop
 ```
 
 For ODBC support
@@ -183,7 +183,7 @@ If you want to install all of the above
 # Install build tools
 sudo eopkg it -c system.devel
 
-sudo eopkg install wxwidgets-devel mesalib-devel libglu-devel fop unixodbc-devel openjdk-8 openjdk-8-devel
+sudo eopkg install wxwidgets-devel libx11-devel mesalib-devel libglu-devel fop unixodbc-devel openjdk-8 openjdk-8-devel
 ```
 
 #### OpenJDK issues on Solus
