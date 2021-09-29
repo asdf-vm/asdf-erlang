@@ -99,7 +99,7 @@ Install OpenSSL
 `brew install openssl`
 
 For building with wxWidgets (start observer or debugger!)
-`brew install wxmac`
+`brew install wxwidgets`
 
 #### Dealing with OpenSSL issues on macOS
 
