@@ -96,7 +96,7 @@ Install the build tools
 `brew install autoconf`
 
 Install OpenSSL
-`brew install openssl`
+`brew install openssl@1.1`. _Erlang doesn't support openssl 3 yet, [read more here](https://github.com/erlang/otp/issues/4577#issuecomment-925962048)._
 
 For building with wxWidgets (start observer or debugger!)
 `brew install wxwidgets`
@@ -118,7 +118,7 @@ an example that skips the java dependency and also sets a specific (and existing
 path for OpenSSL installed via brew on macOS.
 
 ```
-$ export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=$(brew --prefix openssl)"
+$ export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=$(brew --prefix openssl@1.1)"
 $ asdf install erlang <version>
 ```
 
