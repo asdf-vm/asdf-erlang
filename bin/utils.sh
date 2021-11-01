@@ -1,4 +1,4 @@
-KERL_VERSION="2.2.1"
+KERL_VERSION="2.2.2"
 
 handle_failure() {
   function=$1
