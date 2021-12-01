@@ -88,6 +88,9 @@ For building ssl
 ODBC support
 `sudo pacman -S unixodbc`
 
+For building documentation and elixir reference builds:
+`sudo pacman -S libxslt fop`
+
 ### OSX
 
 Note, for MacOS 10.15.4 and newer, 22.3.1 is the earliest version that can be installed through `kerl` (and, therefore, `asdf`). Earlier versions will fail to compile. See [this issue](https://github.com/kerl/kerl/issues/335#issuecomment-605487028) for details.
@@ -100,6 +103,9 @@ Install OpenSSL
 
 For building with wxWidgets (start observer or debugger!)
 `brew install wxwidgets`
+
+For building documentation and elixir reference builds:
+`brew install libxslt fop`
 
 #### Dealing with OpenSSL issues on macOS
 
