@@ -47,7 +47,7 @@ download_kerl() {
 
     local kerl_url="https://raw.githubusercontent.com/kerl/kerl/${KERL_VERSION}/kerl"
 
-    curl -Lso "$(kerl_path)" $kerl_url
+    curl -Lo "$(kerl_path)" $kerl_url
     chmod +x "$(kerl_path)"
 }
 
