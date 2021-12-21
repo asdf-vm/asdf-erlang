@@ -51,8 +51,16 @@ link_app_executables() {
     # Link other executables to the bin directory so that asdf shims are created for them
     cd "$install_path/bin"
 
-    # ln call may fail if multiple executables are found with the same name
-    ln -s ../lib/*/bin/* ../lib/*/priv/bin/* . || true
+    # ln call may fail if multiple executables are found with the same name, so
+    # we loop over all files matching these patterns, and symlink only if
+    # file with same name does not already exist in "$install_path/bin"
+    for file in ../lib/*/bin/* ../lib/*/priv/bin/*; do
+      bin_name="$(basename "$file")"
+
+      if [ ! -e "./$bin_name" ]; then
+        ln -s "$file" .
+      fi
+    done
 }
 
 install_erlang
