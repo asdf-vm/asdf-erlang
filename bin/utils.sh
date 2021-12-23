@@ -1,16 +1,4 @@
-KERL_VERSION="2.2.3"
-
-handle_failure() {
-  function=$1
-  error_message=$2
-  $function && exit_code=$? || exit_code=$?
-
-  if [ "$exit_code" -ne 0 ]; then
-    printf "$error_message\\n" 1>&2
-  fi
-
-  return "$exit_code"
-}
+export KERL_VERSION="${ASDF_KERL_VERSION:-2.2.3}"
 
 handle_failure() {
   function=$1

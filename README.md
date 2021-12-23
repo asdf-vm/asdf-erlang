@@ -251,3 +251,11 @@ Repeat the same for `KERL_INSTALL_HTMLDOCS` `KERL_INSTALL_MANPAGES` if required 
 In case you want it to be persisted between sessions (machine reboots - for example for future installations) type `set -xU KERL_BUILD_DOCS yes`.
 
 To remove environment variable type: `set -e KERL_BUILD_DOCS`.
+
+### Use a specific version of kerl
+
+Overriding the default kerl version shouldn't ever be necessary, but if you want to you a specific version of kerl you can set:
+
+```shell
+export ASDF_KERL_VERSION="2.1.1"
+```
