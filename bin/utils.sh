@@ -50,6 +50,7 @@ set_kerl_env() {
     export KERL_BASE_DIR="$kerl_home"
     export KERL_BUILD_BACKEND="git"
     export KERL_CONFIG="$kerl_home/.kerlrc"
+    export KERL_DOWNLOAD_DIR="${ASDF_DOWNLOAD_PATH:-}"
 }
 
 update_available_versions() {
