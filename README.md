@@ -53,7 +53,7 @@ Needed for terminal handling (libc-dev libncurses5 libtinfo-dev libtinfo5 ncurse
 `apt-get -y install libncurses5-dev`
 
 For building with wxWidgets (start observer or debugger!)
-`apt-get -y install libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev`
+`apt-get -y install libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev`
 
 For building ssl (libssh-4 libssl-dev zlib1g-dev)
 `apt-get -y install libssh-dev`
@@ -65,7 +65,7 @@ For building documentation:
 `apt-get install xsltproc fop`
 
 If you want to install all the above:
-`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
+`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop`
 
 #### Ubuntu 20.04 LTS
 
@@ -73,6 +73,7 @@ If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
 ### Arch Linux
+
 Provides most of the needed build tools.
 `pacman -S --needed base-devel`
 
@@ -213,6 +214,7 @@ or even embedded documentation (via `c:h` function)).
 For man pages this allows typing `erl -man ets` to get info on `ets` module.
 
 For embedded documentation (on [OTP 23\+](https://www.erlang.org/downloads/23.0)):
+
 - In Erlang's `erl`: via [`c:h/1,2,3`](https://erlang.org/doc/man/c.html#h-1) and [`c:ht/1,2,3`](https://erlang.org/doc/man/c.html#ht-1) for types
 - In Elixir's `iex` (Elixir 1.7+): via [`h/1`](https://hexdocs.pm/iex/IEx.Helpers.html#h/1) and [`t/1`](https://hexdocs.pm/iex/IEx.Helpers.html#t/1) for types
 
@@ -221,10 +223,12 @@ capable of building the docs for specified version of Erlang in required
 formats.
 
 For kerl to be able to build Erlang documentation two requirements have to be met:
+
 1. `KERL_BUILD_DOCS` environment variable has to be set to value `yes`
 2. Additional dependencies have to be installed. For detailed list of dependencies for your OS please refer to the specific section above
 
 Additionally, HTML and Man formats can be ignored entirely:
+
 - `KERL_INSTALL_HTMLDOCS` set to `no` to not install HTML docs
 - `KERL_INSTALL_MANPAGES` set to `no` to skip Man pages.
 
