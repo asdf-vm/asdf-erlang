@@ -19,17 +19,17 @@ Important: Make sure to read the "Before asdf install" section below to install 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang. To specify custom options you [can set environment variables just as you would when using kerl](https://github.com/kerl/kerl#kerl_base_dir). For example, to skip the java dependency during installation use:
 
 ```
-$ export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
-$ asdf install erlang <version>
+export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
+asdf install erlang <version>
 ```
 
 You can also install Erlang from git, or provide the url to a fork and build from git.
 
 ```
-$ asdf install erlang ref:master
+asdf install erlang ref:master
 
-$ export OTP_GITHUB_URL="https://github.com/basho/otp"
-$ asdf install erlang ref:basho
+export OTP_GITHUB_URL="https://github.com/basho/otp"
+asdf install erlang ref:basho
 ```
 
 See [kerl](https://github.com/kerl/kerl) for the complete list of customization options. Note that the `KERL_BASE_DIR` and `KERL_CONFIG` environment variables are set by the plugin when it runs kerl so it will not be possible to customize them.
@@ -124,8 +124,8 @@ an example that skips the java dependency and also sets a specific (and existing
 path for OpenSSL installed via brew on macOS.
 
 ```
-$ export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=$(brew --prefix openssl@1.1)"
-$ asdf install erlang <version>
+export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=$(brew --prefix openssl@1.1)"
+asdf install erlang <version>
 ```
 
 ### CentOS & Fedora
