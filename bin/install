@@ -6,43 +6,30 @@ set -euo pipefail
 #ORIGINAL_IFS=$IFS
 IFS=$'\t\n' # Stricter IFS settings
 
-# shellcheck source=../bin/utils.sh
+# shellcheck source=bin/utils.sh
 source "$(dirname "$0")/utils.sh"
 
 install_erlang() {
-  ensure_kerl_setup
-  local asdf_activation_version
-  local build_name
+    ensure_kerl_setup
+    local build_name
 
-  build_name="asdf_$ASDF_INSTALL_VERSION"
+    build_name="asdf_$ASDF_INSTALL_VERSION"
 
-  export MAKEFLAGS="-j$ASDF_CONCURRENCY"
+    export MAKEFLAGS="-j$ASDF_CONCURRENCY"
 
-  $(kerl_path) delete installation "$build_name" || true
-  $(kerl_path) delete build "$build_name" || true
+    $(kerl_path) delete installation "$build_name" || true
+    $(kerl_path) delete build "$build_name" || true
 
-  if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
-    asdf_activation_version="$ASDF_INSTALL_TYPE:$ASDF_INSTALL_VERSION"
-    $(kerl_path) build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "$build_name"
-  else
-    asdf_activation_version="$ASDF_INSTALL_VERSION"
-    $(kerl_path) build "$ASDF_INSTALL_VERSION" "$build_name"
-  fi
+    if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
+        $(kerl_path) build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "$build_name"
+    else
+        $(kerl_path) build "$ASDF_INSTALL_VERSION" "$build_name"
+    fi
 
-  $(kerl_path) install "$build_name" "$ASDF_INSTALL_PATH"
-  $(kerl_path) cleanup "$ASDF_INSTALL_VERSION"
+    $(kerl_path) install "$build_name" "$ASDF_INSTALL_PATH"
+    $(kerl_path) cleanup "$ASDF_INSTALL_VERSION"
 
-  link_app_executables "$ASDF_INSTALL_PATH"
-
-  echo
-  echo "Erlang $ASDF_INSTALL_VERSION has been installed. Activate globally with:"
-  echo
-  echo "    asdf global erlang $asdf_activation_version"
-  echo
-  echo "Activate locally in the current folder with:"
-  echo
-  echo "    asdf local erlang $asdf_activation_version"
-  echo
+    link_app_executables "$ASDF_INSTALL_PATH"
 }
 
 link_app_executables() {
@@ -55,11 +42,11 @@ link_app_executables() {
     # we loop over all files matching these patterns, and symlink only if
     # file with same name does not already exist in "$install_path/bin"
     for file in ../lib/*/bin/* ../lib/*/priv/bin/*; do
-      bin_name="$(basename "$file")"
+        bin_name="$(basename "$file")"
 
-      if [ ! -e "./$bin_name" ]; then
-        ln -s "$file" .
-      fi
+        if [ ! -e "./$bin_name" ]; then
+            ln -s "$file" .
+        fi
     done
 }
 

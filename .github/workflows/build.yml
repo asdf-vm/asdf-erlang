@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    name: Test asdf-erlang plugin
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install system packages on Ubuntu
+        if: ${{ runner.os == 'Linux' }}
+        run: sudo apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev xsltproc fop libxml2-utils libncurses-dev
+
+      - name: Install system packages on macOS
+        if: ${{ runner.os == 'macOS' }}
+        run: brew install autoconf openssl@1.1
+
+      - name: Test plugin
+        uses: asdf-vm/actions/plugin-test@v1
+        with:
+          command: erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), "releases", erlang:system_info(otp_release), "OTP_VERSION"])), io:fwrite(re:replace(Version, "(^\\s+)|(\\s+$)", "", [global,{return,list}])), halt().' -noshell
