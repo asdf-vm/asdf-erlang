@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    name: template setup test
+    name: Test asdf-erlang plugin
     strategy:
       matrix:
         os:
