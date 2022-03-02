@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-exec shfmt -d .
+exec shfmt -d bin/*
