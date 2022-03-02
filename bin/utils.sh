@@ -31,7 +31,7 @@ ensure_kerl_installed() {
 
 download_kerl() {
     # Print to stderr so asdf doesn't assume this string is a list of versions
-    echo "Downloading kerl..." >&2
+    printf "Downloading kerl...\n" 1>&2
 
     local kerl_url="https://raw.githubusercontent.com/kerl/kerl/${KERL_VERSION}/kerl"
 
@@ -40,7 +40,7 @@ download_kerl() {
 }
 
 kerl_path() {
-    echo "$(dirname "$(dirname $0)")/kerl"
+    printf "%s\n" "$(dirname "$(dirname $0)")/kerl"
 }
 
 set_kerl_env() {
