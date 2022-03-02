@@ -6,7 +6,7 @@ handle_failure() {
     $function && exit_code=$? || exit_code=$?
 
     if [ "$exit_code" -ne 0 ]; then
-        printf "$error_message\\n" 1>&2
+        printf "%s\\n" "$error_message" 1>&2
     fi
 
     return "$exit_code"
@@ -31,16 +31,16 @@ ensure_kerl_installed() {
 
 download_kerl() {
     # Print to stderr so asdf doesn't assume this string is a list of versions
-    printf "Downloading kerl...\n" >&2
+    printf "Downloading kerl...\\n" >&2
 
     local kerl_url="https://raw.githubusercontent.com/kerl/kerl/${KERL_VERSION}/kerl"
 
-    curl -Lo "$(kerl_path)" $kerl_url
+    curl -Lo "$(kerl_path)" "$kerl_url"
     chmod +x "$(kerl_path)"
 }
 
 kerl_path() {
-    printf "%s\n" "$(dirname "$(dirname $0)")/kerl"
+    printf "%s\\n" "$(dirname "$(dirname "$0")")/kerl"
 }
 
 set_kerl_env() {

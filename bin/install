@@ -6,12 +6,11 @@ set -euo pipefail
 #ORIGINAL_IFS=$IFS
 IFS=$'\t\n' # Stricter IFS settings
 
-# shellcheck source=../bin/utils.sh
+# shellcheck source=bin/utils.sh
 source "$(dirname "$0")/utils.sh"
 
 install_erlang() {
     ensure_kerl_setup
-    local asdf_activation_version
     local build_name
 
     build_name="asdf_$ASDF_INSTALL_VERSION"
@@ -22,10 +21,8 @@ install_erlang() {
     $(kerl_path) delete build "$build_name" || true
 
     if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
-        asdf_activation_version="$ASDF_INSTALL_TYPE:$ASDF_INSTALL_VERSION"
         $(kerl_path) build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "$build_name"
     else
-        asdf_activation_version="$ASDF_INSTALL_VERSION"
         $(kerl_path) build "$ASDF_INSTALL_VERSION" "$build_name"
     fi
 

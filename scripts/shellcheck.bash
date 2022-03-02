@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-exec shellcheck -s bash -x \
-  setup.bash \
-  bin/* -P bin/
+exec shellcheck -s bash -x bin/*
