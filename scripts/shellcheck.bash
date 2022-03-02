@@ -2,4 +2,4 @@
 
 exec shellcheck -s bash -x \
   setup.bash \
-  template/bin/* -P template/lib/
+  bin/* -P lib/
