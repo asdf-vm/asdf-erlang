@@ -52,7 +52,7 @@ Needed for HiPE (native code) support, but already installed by autoconf
 Needed for terminal handling (libc-dev libncurses5 libtinfo-dev libtinfo5 ncurses-bin)
 `apt-get -y install libncurses5-dev`
 
-For building with wxWidgets (start observer or debugger!)
+For building with wxWidgets (start observer or debugger!). Note that you may need to select the right `wx-config` before installing Erlang.
 `apt-get -y install libwxgtk3.0-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev`
 
 For building ssl (libssh-4 libssl-dev zlib1g-dev)
@@ -69,8 +69,11 @@ If you want to install all the above:
 
 #### Ubuntu 20.04 LTS
 
+If you need to use `wxWebView` in Erlang you'll want to a library for it:
+`apt-get -y libwxgtk-webview3.0-gtk3-dev`
+
 If you want to install all the above:
-`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
+`apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
 ### Arch Linux
 Provides most of the needed build tools.
@@ -79,7 +82,7 @@ Provides most of the needed build tools.
 Needed for terminal handling
 `pacman -S ncurses`
 
-For building with wxWidgets (start observer or debugger!)
+For building with wxWidgets (start observer or debugger!). Note that you may need to select the right `wx-config` before installing Erlang.
 `pacman -S glu mesa wxgtk2 libpng`
 
 For building ssl
@@ -101,7 +104,7 @@ Install the build tools
 Install OpenSSL
 `brew install openssl@1.1`. _Erlang doesn't support openssl 3 yet, [read more here](https://github.com/erlang/otp/issues/4577#issuecomment-925962048)._
 
-For building with wxWidgets (start observer or debugger!)
+For building with wxWidgets (start observer or debugger!). Note that you may need to select the right `wx-config` before installing Erlang.
 `brew install wxwidgets`
 
 For building documentation and elixir reference builds:
@@ -142,7 +145,7 @@ Automatic configure script builder
 Needed for terminal handling
 `sudo yum install -y ncurses-devel`
 
-For building with wxWidgets (start observer or debugger!)
+For building with wxWidgets (start observer or debugger!). Note that you may need to select the right `wx-config` before installing Erlang.
 `sudo yum install -y wxGTK3-devel wxBase3`
 
 For building ssl
@@ -165,7 +168,7 @@ Install the build tools
 sudo eopkg it -c system.devel
 ```
 
-For building wxWidgets
+For building with wxWidgets (start observer or debugger!). Note that you may need to select the right `wx-config` before installing Erlang.
 
 ```bash
 sudo eopkg install wxwidgets-devel libx11-devel mesalib-devel libglu-devel fop
