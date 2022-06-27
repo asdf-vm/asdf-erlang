@@ -70,7 +70,7 @@ If you want to install all the above:
 #### Ubuntu 20.04 LTS
 
 If you need to use `wxWebView` in Erlang you'll want to a library for it:
-`apt-get -y libwxgtk-webview3.0-gtk3-dev`
+`apt-get -y install libwxgtk-webview3.0-gtk3-dev`
 
 If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
