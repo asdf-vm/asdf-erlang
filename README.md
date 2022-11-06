@@ -82,8 +82,8 @@ Provides most of the needed build tools.
 Needed for terminal handling
 `pacman -S ncurses`
 
-For building with wxWidgets (start observer or debugger!). Note that you may need to select the right `wx-config` before installing Erlang.
-`pacman -S glu mesa wxgtk2 libpng`
+For building with wxWidgets (start observer or debugger!). Make sure `wx-config --list` prints `Default config is gtk3-unicode-...` before installing Erlang.
+`pacman -S glu mesa wxwidgets-gtk3 libpng`
 
 For building ssl
 `pacman -S libssh`
