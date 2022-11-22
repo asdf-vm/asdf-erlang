@@ -1,4 +1,4 @@
-export KERL_VERSION="${ASDF_KERL_VERSION:-2.2.3}"
+export KERL_VERSION="${ASDF_KERL_VERSION:-2.4.0}"
 
 handle_failure() {
     function=$1
