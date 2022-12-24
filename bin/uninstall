@@ -11,6 +11,11 @@ source "$(dirname "$0")/utils.sh"
 
 ensure_kerl_setup
 
+if [ "$ASDF_INSTALL_VERSION" == "" ]; then
+    echo "Please provide the version you want to uninstall"
+    exit 1
+fi
+
 # Remove the installation and build if the installation was done by kerl
 if $(kerl_path) list installations | grep "$ASDF_INSTALL_PATH"; then
     $(kerl_path) delete build "asdf_$ASDF_INSTALL_VERSION" || true
