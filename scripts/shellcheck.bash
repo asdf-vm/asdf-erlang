@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-exec shellcheck -s bash -x bin/*
+exec shellcheck -s bash -x bin/* -x lib/*
