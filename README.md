@@ -12,11 +12,11 @@ kerl's compatibility and build scripts, together with asdf's easy version switch
 asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
 ```
 
-Important: Make sure to read the "Before asdf install" section below to install dependencies!
+**Important**: Make sure to read the [Before asdf install](#before-asdf-install) section below to install dependencies!
 
 ## Use
 
-Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang. To specify custom options you [can set environment variables just as you would when using kerl](https://github.com/kerl/kerl#kerl_base_dir). For example, to skip the java dependency during installation use:
+Check [asdf](https://github.com/asdf-vm/asdf) readme for instructions on how to install & manage versions of Erlang. To specify custom options you [can set environment variables just as you would when using kerl](https://github.com/kerl/kerl#kerl_base_dir). For example, to skip the Java dependency during installation use:
 
 ```
 export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
@@ -76,6 +76,7 @@ If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
 ### Arch Linux
+
 Provides most of the needed build tools.
 `pacman -S --needed base-devel`
 
