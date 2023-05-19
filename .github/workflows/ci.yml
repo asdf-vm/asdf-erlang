@@ -1,11 +1,18 @@
-name: Build
+name: CI
 
 on:
-  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths-ignore:
+      - "**.md"
   push:
     branches:
       - main
-  pull_request:
+    paths-ignore:
+      - "**.md"
 
 jobs:
   test:
@@ -31,3 +38,23 @@ jobs:
         uses: asdf-vm/actions/plugin-test@v1
         with:
           command: erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), "releases", erlang:system_info(otp_release), "OTP_VERSION"])), io:fwrite(re:replace(Version, "(^\\s+)|(\\s+$)", "", [global,{return,list}])), halt().' -noshell
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run ShellCheck
+        run: scripts/shellcheck.bash
+
+  format:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install shfmt
+        run: brew install shfmt
+
+      - name: Run shfmt
+        run: scripts/shfmt.bash
