@@ -6,8 +6,8 @@ set -euo pipefail
 #ORIGINAL_IFS=$IFS
 IFS=$'\t\n' # Stricter IFS settings
 
-# shellcheck source=bin/utils.sh
-source "$(dirname "$0")/utils.sh"
+# shellcheck source=lib/utils.sh
+source "$(dirname "$0")/../lib/utils.sh"
 
 install_erlang() {
     ensure_kerl_setup
