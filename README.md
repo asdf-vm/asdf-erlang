@@ -102,8 +102,9 @@ Note, for MacOS 10.15.4 and newer, 22.3.1 is the earliest version that can be in
 Install the build tools
 `brew install autoconf`
 
-Install OpenSSL
-`brew install openssl@1.1`. _Erlang doesn't support openssl 3 yet, [read more here](https://github.com/erlang/otp/issues/4577#issuecomment-925962048)._
+Install OpenSSL `brew install openssl`
+
+Note, Erlang 23 and older, doesn't support openssl 3, [read more here](https://github.com/erlang/otp/issues/4577#issuecomment-925962048): `brew install openssl@1.1`
 
 For building with wxWidgets (start observer or debugger!). Note that you may need to select the right `wx-config` before installing Erlang.
 `brew install wxwidgets`
