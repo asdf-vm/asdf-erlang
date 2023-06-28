@@ -105,8 +105,8 @@ Install the build tools
 Install OpenSSL
 `brew install openssl@1.1`  _Erlang 24.1 and older require OpenSSL 1.1, [read more here](https://github.com/erlang/otp/issues/4577#issuecomment-925962048)_
 
-Note, Erlang 25.1 and newer, [support OpenSSL 3.0, even for production use.](https://github.com/erlang/otp/releases/tag/OTP-25.1) 
-If necessary, you can install the latest version of OpenSSL `brew install openssl`
+Note, Erlang 25.1 and newer [support OpenSSL 3.0, even for production use.](https://github.com/erlang/otp/releases/tag/OTP-25.1) 
+If you want to build Erlang with openssl@3.0, install it by `brew install openssl`
 
 For building with wxWidgets (start observer or debugger!). Note that you may need to select the right `wx-config` before installing Erlang.
 `brew install wxwidgets`
