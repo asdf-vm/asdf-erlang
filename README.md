@@ -212,6 +212,34 @@ PATH=$PATH:$JAVA_HOME/bin
 source ~/.bashrc
 ```
 
+### openSUSE Tumbleweed
+
+Even after you have installed the dependencies below, the Erlang installer will warn that g++ and openssl-devel appear missing.  This is safe to ignore.
+
+The basic stuff to get Erlang to compile:
+
+```
+sudo zypper install unzip make automake autoconf gcc-c++ ncurses-devel
+```
+
+For crypto, ssh, and others (you probably want this):
+
+```
+sudo zypper install libssh-devel libopenssl-devel
+```
+
+For wx GUIs (observer, debugger, etc):
+
+```
+sudo zypper install wxGTK3-3_2-devel
+```
+
+To build documentation:
+
+```
+sudo zypper install fop libxml2-tools libxslt-tools
+```
+
 ## Getting Erlang documentation
 
 Erlang may come with documentation included (as man pages, pdfs and html files,
