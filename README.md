@@ -75,6 +75,11 @@ If you need to use `wxWebView` in Erlang you'll want to a library for it:
 If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
+#### Debian 12 (bookworm)
+
+To install the whole dependency suite:
+`apt-get -y install build-essential autoconf m4 libncurses-dev libwxgtk3.2-dev libwxgtk-webview3.2-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-17-jdk`
+
 ### Arch Linux
 
 Provides most of the needed build tools.
