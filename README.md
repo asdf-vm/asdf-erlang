@@ -306,3 +306,10 @@ Overriding the default kerl version shouldn't ever be necessary, but if you want
 ```shell
 export ASDF_KERL_VERSION="2.1.1"
 ```
+
+If you'd prefer to have `asdf-erlang` use an existing local version of `kerl`, you can set:
+
+```shell
+# Must point to the executable, not its parent directory
+export ASDF_KERL_PATH="~/Git/kerl/kerl"
+```

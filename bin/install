@@ -3,11 +3,11 @@
 # Unoffical Bash "strict mode"
 # http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -euo pipefail
-#ORIGINAL_IFS=$IFS
 IFS=$'\t\n' # Stricter IFS settings
 
-# shellcheck source=lib/utils.sh
-source "$(dirname "$0")/../lib/utils.sh"
+asdf_bin_dir=$(dirname "$0")
+# shellcheck source=../lib/utils.sh
+source "$asdf_bin_dir/../lib/utils.sh"
 
 install_erlang() {
     ensure_kerl_setup
@@ -17,21 +17,19 @@ install_erlang() {
 
     export MAKEFLAGS="-j$ASDF_CONCURRENCY"
 
-    $(kerl_path) delete installation "$build_name" || true
-    $(kerl_path) delete build "$build_name" || true
+    "$KERL_PATH" delete installation "$build_name" || true
+    "$KERL_PATH" delete build "$build_name" || true
 
     if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
-        $(kerl_path) build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "$build_name"
+        "$KERL_PATH" build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "$build_name"
     else
-        $(kerl_path) build "$ASDF_INSTALL_VERSION" "$build_name"
+        "$KERL_PATH" build "$ASDF_INSTALL_VERSION" "$build_name"
     fi
 
-    # We hide all output from this command so the
-    # "You can activate this installation running the following command:"
-    # that doesn't apply is hidden
-    $(kerl_path) install "$build_name" "$ASDF_INSTALL_PATH" >/dev/null
-    $(kerl_path) cleanup "$ASDF_INSTALL_VERSION"
-
+    # We filter the output of the install command to hide irrelevant messages:
+    # "You can activate/leave this installation running the following command"
+    "$KERL_PATH" install 2>&1 | grep -v 'activate|leave'
+    "$KERL_PATH" cleanup "$ASDF_INSTALL_VERSION"
     link_app_executables "$ASDF_INSTALL_PATH"
 }
 
