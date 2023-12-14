@@ -3,16 +3,16 @@
 # Unoffical Bash "strict mode"
 # http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -euo pipefail
-#ORIGINAL_IFS=$IFS
 IFS=$'\t\n' # Stricter IFS settings
 
-# shellcheck source=lib/utils.sh
-source "$(dirname "$0")/../lib/utils.sh"
+asdf_bin_dir=$(dirname "$0")
+# shellcheck source=../lib/utils.sh
+source "$asdf_bin_dir/../lib/utils.sh"
 
 list_all() {
     ensure_kerl_setup
 
-    "$(kerl_path)" list releases | sed -e 's:Run.*::' | tr '\n' ' '
+    "$KERL_PATH" list releases | sed -e 's:Run.*::' | tr '\n' ' '
 }
 
 list_all

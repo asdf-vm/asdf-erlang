@@ -3,11 +3,11 @@
 # Unoffical Bash "strict mode"
 # http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -euo pipefail
-#ORIGINAL_IFS=$IFS
 IFS=$'\t\n' # Stricter IFS settings
 
-# shellcheck source=lib/utils.sh
-source "$(dirname "$0")/../lib/utils.sh"
+asdf_bin_dir=$(dirname "$0")
+# shellcheck source=../lib/utils.sh
+source "$asdf_bin_dir/../lib/utils.sh"
 
 ensure_kerl_setup
 
@@ -17,9 +17,9 @@ if [ "$ASDF_INSTALL_VERSION" == "" ]; then
 fi
 
 # Remove the installation and build if the installation was done by kerl
-if $(kerl_path) list installations | grep "$ASDF_INSTALL_PATH"; then
-    $(kerl_path) delete build "asdf_$ASDF_INSTALL_VERSION" || true
-    $(kerl_path) delete installation "$ASDF_INSTALL_PATH" || true
+if "$KERL_PATH" list installations | grep "$ASDF_INSTALL_PATH"; then
+    "$KERL_PATH" delete build "asdf_$ASDF_INSTALL_VERSION" || true
+    "$KERL_PATH" delete installation "$ASDF_INSTALL_PATH" || true
 fi
 
 # Finally make sure the directory is actually removed regardless of what the
