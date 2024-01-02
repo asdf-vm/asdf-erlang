@@ -11,8 +11,7 @@ source "$(dirname "$0")/../lib/utils.sh"
 
 list_all() {
     ensure_kerl_setup
-
-    "$(kerl_path)" list releases | sed -e 's:Run.*::' | tr '\n' ' '
+    "$(kerl_path)" list releases all | tr '\n' ' '
 }
 
 list_all
