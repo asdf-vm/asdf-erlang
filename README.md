@@ -100,6 +100,28 @@ ODBC support
 For building documentation and elixir reference builds:
 `sudo pacman -S libxslt fop`
 
+#### Dealing with ODBC issues on arch
+
+You may encounter an ODBC error with an output along these lines:
+
+```
+error: ld returned 1 exit status
+[x86_64-pc-linux-gnu/Makefile:112: ../priv/bin/x86_64-pc-linux-gnu/odbcserver] Error 1
+
+or
+
+* odbc           : ODBC library - link check failed
+```
+
+This issue has been discussed [here](https://github.com/asdf-vm/asdf-erlang/issues/286) and also appears on kerl. There are
+a link error on Kerl auto configure. If you see this, add a export flag `--with-odbc` to KERL-CONFIGURE. Here is
+an example that skips the java dependency and also sets a specific (and existing)
+path for unixodbc installed via pacman:
+```
+export KERL_CONFIGURE_OPTIONS="--without-javac --with-odbc=/var/lib/pacman/local/unixodbc-$(pacman -Q unixodbc | cut -d' ' -f2)"
+asdf install erlang <version>
+```
+
 ### OSX
 
 Note, for MacOS 10.15.4 and newer, 22.3.1 is the earliest version that can be installed through `kerl` (and, therefore, `asdf`). Earlier versions will fail to compile. See [this issue](https://github.com/kerl/kerl/issues/335#issuecomment-605487028) for details.
