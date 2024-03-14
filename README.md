@@ -69,7 +69,7 @@ If you want to install all the above:
 
 #### Ubuntu 20.04 LTS
 
-If you need to use `wxWebView` in Erlang you'll want to a library for it:
+If you need to use `wxWebView` in Erlang you'll want to install a library for it:
 `apt-get -y install libwxgtk-webview3.0-gtk3-dev`
 
 If you want to install all the above:
@@ -182,13 +182,13 @@ For building with wxWidgets (start observer or debugger!). Note that you may nee
 For building ssl
 `sudo yum install -y openssl-devel`
 
-for jinterface
+For jinterface
 `sudo yum install -y java-1.8.0-openjdk-devel`
 
 ODBC support
 `sudo yum install -y libiodbc unixODBC-devel.x86_64 erlang-odbc.x86_64`
 
-for the documentation to be built
+For the documentation to be built
 `sudo yum install -y libxslt fop`
 
 ### Solus
