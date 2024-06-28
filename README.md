@@ -76,6 +76,12 @@ If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
 #### Ubuntu 24.04 LTS
+
+Ubuntu versions 23.0+ have broken compatibility with `kerl`, which `asdf-erlang` depends upon. When installing this plugin, specify `kerl` version 4.1.1, where this issue has been fixed:  
+`ASDF_KERL_VERSION='4.1.1' asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git`
+
+`libncurses5-dev`, a dependency of this plugin. This issue is fixed in a recent update to `kerl`, you can install the updated version with 
+
 If you want to install all the above:
 `apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.2-dev libwxgtk-webview3.2-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk`
 
