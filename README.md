@@ -181,7 +181,7 @@ Needed for terminal handling
 `sudo yum install -y ncurses-devel`
 
 For building with wxWidgets (start observer or debugger!). Note that you may need to select the right `wx-config` before installing Erlang.
-`sudo yum install -y wxGTK3-devel wxBase3`
+`sudo yum install -y wxGTK-devel wxBase`
 
 For building ssl
 `sudo yum install -y openssl-devel`
