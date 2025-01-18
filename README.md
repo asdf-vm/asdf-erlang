@@ -172,10 +172,7 @@ These steps assume a most recent build of CentOS (currently
 tested on CentOS 7.5 x64 & Fedora 28 x64)
 
 Install the build tools
-`sudo yum groupinstall -y 'Development Tools' 'C Development Tools and Libraries'`
-
-Automatic configure script builder
-`sudo yum install -y autoconf`
+`sudo yum install -y git gcc g++ auto make autoconf`
 
 Needed for terminal handling
 `sudo yum install -y ncurses-devel`
