@@ -172,7 +172,7 @@ These steps assume a most recent build of CentOS (currently
 tested on CentOS 7.5 x64 & Fedora 28 x64)
 
 Install the build tools
-`sudo yum install -y git gcc g++ auto make autoconf`
+`sudo yum install -y git gcc g++ automake autoconf`
 
 Needed for terminal handling
 `sudo yum install -y ncurses-devel`
