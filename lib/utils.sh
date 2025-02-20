@@ -1,3 +1,6 @@
+#!/bin/sh
+
+export CI='true'
 export KERL_VERSION="${ASDF_KERL_VERSION:-4.3.0}"
 
 handle_failure() {
@@ -33,10 +36,12 @@ download_kerl() {
     # Print to stderr so asdf doesn't assume this string is a list of versions
     printf "Downloading kerl...\\n" >&2
 
-    local kerl_url="https://raw.githubusercontent.com/kerl/kerl/${KERL_VERSION}/kerl"
+    kerl_url="https://raw.githubusercontent.com/kerl/kerl/${KERL_VERSION}/kerl"
 
     curl -Lo "$(kerl_path)" "$kerl_url"
     chmod +x "$(kerl_path)"
+
+    unset kerl_url
 }
 
 kerl_path() {
@@ -44,13 +49,13 @@ kerl_path() {
 }
 
 set_kerl_env() {
-    local kerl_home
     kerl_home="$(dirname "$(dirname "$0")")/kerl-home"
     mkdir -p "$kerl_home"
     export KERL_BASE_DIR="$kerl_home"
     export KERL_BUILD_BACKEND="git"
     export KERL_CONFIG="$kerl_home/.kerlrc"
     export KERL_DOWNLOAD_DIR="${ASDF_DOWNLOAD_PATH:-}"
+    unset kerl_home
 }
 
 update_available_versions() {
