@@ -1,5 +1,18 @@
 #!/bin/sh
 
+# By setting CI=true, this means that `kerl version` will not echo the
+# following output if `tput sgr0` fails within the `kerl` script:
+#
+# "Colorization disabled as 'tput' (via 'ncurses') seems to be
+#  unavailable."
+#
+# `tput sgr0` can fail if `kerl` is run via `asdf`, for instance.
+#
+# This is important, because the version check in this script depends on
+# the output simply being a version string, like `4.3.0`. If the above
+# text is output, the version check fails in ensure_kerl_installed, and
+# kerl is _always_ downloaded.
+#
 export CI='true'
 export KERL_VERSION="${ASDF_KERL_VERSION:-4.3.0}"
 
