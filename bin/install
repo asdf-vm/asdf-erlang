@@ -110,7 +110,8 @@ set_unixodbc_opt() {
         fi
 
         if [[ ! "$KERL_CONFIGURE_OPTIONS" =~ unixodbc ]]; then
-            local kerl_unixodbc_opt; kerl_unixodbc_opt=" --with-odbc=$(brew --prefix unixodbc)";
+            local kerl_unixodbc_opt
+            kerl_unixodbc_opt=" --with-odbc=$(brew --prefix unixodbc)"
             export KERL_CONFIGURE_OPTIONS+=" $kerl_unixodbc_opt"
             echo "[asdf-erlang] 🛟 Added unixodbc to KERL_CONFIGURE_OPTIONS: $kerl_unixodbc_opt"
         fi
@@ -136,7 +137,8 @@ set_unixodbc_opt() {
             echo "[asdf-erlang] 🛟 No LDFLAGS found. Setting LDFLAGS to: $LDFLAGS"
             LDFLAGS_SET_BY_ASDF_ERLANG=1 # so that we can clear it later.
         elif [[ "$LDFLAGS" != *unixodbc* ]]; then
-            local unixodbc_lib_path; unixodbc_lib_path="$(brew --prefix unixodbc)/lib"
+            local unixodbc_lib_path
+            unixodbc_lib_path="$(brew --prefix unixodbc)/lib"
             export LDFLAGS+=" -L$unixodbc_lib_path"
             echo "[asdf-erlang] 🛟 Added $unixodbc_lib_path to LDFLAGS env var"
         fi
@@ -149,7 +151,8 @@ add_openjdk_to_path() {
             return
         fi
 
-        local openjdk_path; openjdk_path="$(brew --prefix openjdk)"
+        local openjdk_path
+        openjdk_path="$(brew --prefix openjdk)"
         if [[ ":$PATH:" != *":$openjdk_path/bin:"* ]]; then
             export PATH="$openjdk_path/bin:$PATH"
             echo "[asdf-erlang] 🛟 OpenJDK has been added to PATH for this terminal session: $openjdk_path/bin"
@@ -193,7 +196,8 @@ set_ssl_opt() {
 
         # If openssl is not already in KERL_CONFIGURE_OPTIONS, then add it.
         if [[ ! "$KERL_CONFIGURE_OPTIONS" =~ openssl ]]; then
-            local kerl_ssl_opt; kerl_ssl_opt=" --with-ssl=$(brew --prefix openssl@3)";
+            local kerl_ssl_opt
+            kerl_ssl_opt=" --with-ssl=$(brew --prefix openssl@3)"
             export KERL_CONFIGURE_OPTIONS+=" $kerl_ssl_opt"
             echo "[asdf-erlang] 🛟 Added openssl to KERL_CONFIGURE_OPTIONS: $kerl_ssl_opt"
         fi
