@@ -13,12 +13,31 @@ install_erlang() {
     ensure_kerl_setup
     local build_name
 
+    install_dependency_checks
+    ensure_kerl_config_opts
+    set_unixodbc_opt
+    set_ssl_opt
+    add_openjdk_to_path
+    ensure_ulimit
+
+    echo "[asdf-erlang] 📦 Building with $(env | grep KERL_CONFIGURE_OPTIONS)"
+
     build_name="asdf_$ASDF_INSTALL_VERSION"
 
     export MAKEFLAGS="-j$ASDF_CONCURRENCY"
 
-    $(kerl_path) delete installation "$build_name" || true
-    $(kerl_path) delete build "$build_name" || true
+    if $(kerl_path) list installations | grep -q "$build_name"; then
+        echo "[asdf-erlang] 🧹 Cleanup kerl installation $build_name"
+        $(kerl_path) delete installation "$build_name" || true
+    else
+        echo "[asdf-erlang] ❄️ No kerl installation to cleanup for $build_name"
+    fi
+    if $(kerl_path) list builds | grep -q "$build_name"; then
+        echo "[asdf-erlang] 🧹 Cleanup kerl build $build_name"
+        $(kerl_path) delete build "$build_name" || true
+    else
+        echo "[asdf-erlang] ❄️ No kerl build to cleanup for $build_name"
+    fi
 
     if [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
         $(kerl_path) build git "${OTP_GITHUB_URL:-https://github.com/erlang/otp.git}" "$ASDF_INSTALL_VERSION" "$build_name"
@@ -29,10 +48,16 @@ install_erlang() {
     # We hide all output from this command so the
     # "You can activate this installation running the following command:"
     # that doesn't apply is hidden
+    echo "🧹 Cleanup kerl install $build_name $ASDF_INSTALL_PATH"
     $(kerl_path) install "$build_name" "$ASDF_INSTALL_PATH" >/dev/null 2>&1
+
+    echo "🧹 Cleanup kerl build $build_name"
     $(kerl_path) cleanup "$build_name"
 
+    echo "🔗 Linking app executables $ASDF_INSTALL_PATH"
     link_app_executables "$ASDF_INSTALL_PATH"
+    cleanup_custom_env_vars
+    echo "👍 Installed erlang ${ASDF_INSTALL_VERSION}"
 }
 
 link_app_executables() {
@@ -51,6 +76,142 @@ link_app_executables() {
             ln -s "$file" .
         fi
     done
+}
+
+install_dependency_checks() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        installed_packages=()
+        for package in fop openssl unixodbc openjdk wxmac; do
+            if brew list --versions "$package" >/dev/null 2>&1; then
+                installed_packages+=("$package")
+            else
+                if [ "$package" = "wxmac" ]; then
+                    echo "[asdf-erlang] ⚠️ Warning: $package is optional and not installed. You can install it using 'brew install --build-from-source wxmac'."
+                    echo "[asdf-erlang] ⚠️ Note: wxmac is required for building Erlang/OTP with a working :observer"
+                else
+                    echo "[asdf-erlang] ⚠️ Warning: $package is optional and not installed. Please install it using 'brew install $package'."
+                fi
+            fi
+        done
+    fi
+}
+
+ensure_kerl_config_opts() {
+    if [[ -z "${KERL_CONFIGURE_OPTIONS:-}" ]]; then
+        export KERL_CONFIGURE_OPTIONS=""
+    fi
+}
+
+set_unixodbc_opt() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # If no unixodbc is installed, then skip.
+        if ! brew --prefix unixodbc >/dev/null 2>&1; then
+            return
+        fi
+
+        if [[ ! "$KERL_CONFIGURE_OPTIONS" =~ unixodbc ]]; then
+            local kerl_unixodbc_opt
+            kerl_unixodbc_opt=" --with-odbc=$(brew --prefix unixodbc)"
+            export KERL_CONFIGURE_OPTIONS+=" $kerl_unixodbc_opt"
+            echo "[asdf-erlang] 🛟 Added unixodbc to KERL_CONFIGURE_OPTIONS: $kerl_unixodbc_opt"
+        fi
+
+        # If CC not set, then set CC.
+        # ELSE add the unixodbc include path to CC.
+        if [ -z "${CC:-}" ]; then
+            CC="/usr/bin/clang -I$(brew --prefix unixodbc)/include"
+            export CC
+            echo "[asdf-erlang] 🛟 No CC found. Setting CC to: $CC"
+            CC_SET_BY_ASDF_ERLANG=1 # so that we can clear it later.
+        elif [[ "$CC" != *unixodbc* ]]; then
+            CC+=" -I$(brew --prefix unixodbc)/include"
+            export CC
+            echo "[asdf-erlang] 🛟 Added unixodbc include path to CC: $CC"
+        fi
+
+        # If LDFLAGS not set, then set LDFLAGS.
+        # ELSE add the unixodbc library path to LDFLAGS.
+        if [ -z "${LDFLAGS:-}" ]; then
+            LDFLAGS="-L$(brew --prefix unixodbc)/lib"
+            export LDFLAGS
+            echo "[asdf-erlang] 🛟 No LDFLAGS found. Setting LDFLAGS to: $LDFLAGS"
+            LDFLAGS_SET_BY_ASDF_ERLANG=1 # so that we can clear it later.
+        elif [[ "$LDFLAGS" != *unixodbc* ]]; then
+            local unixodbc_lib_path
+            unixodbc_lib_path="$(brew --prefix unixodbc)/lib"
+            export LDFLAGS+=" -L$unixodbc_lib_path"
+            echo "[asdf-erlang] 🛟 Added $unixodbc_lib_path to LDFLAGS env var"
+        fi
+    fi
+}
+
+add_openjdk_to_path() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        if ! brew --prefix openjdk >/dev/null 2>&1; then
+            return
+        fi
+
+        local openjdk_path
+        openjdk_path="$(brew --prefix openjdk)"
+        if [[ ":$PATH:" != *":$openjdk_path/bin:"* ]]; then
+            export PATH="$openjdk_path/bin:$PATH"
+            echo "[asdf-erlang] 🛟 OpenJDK has been added to PATH for this terminal session: $openjdk_path/bin"
+            echo "[asdf-erlang] Please ensure this is included in your shell's dot files (.zshrc, .bashrc, etc.)"
+        fi
+    fi
+}
+
+ensure_ulimit() {
+    if [ "$(ulimit -n)" -lt 1000 ]; then
+        ulimit -n 65536
+        echo "[asdf-erlang] 🛟 ulimit was low. It has been set to 65536 for this terminal session"
+    fi
+}
+
+set_ssl_opt() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # If this is a ref install, then we don't need to set the ssl option.
+        # Reason: Don't want to handle that for now.
+        if [[ "$ASDF_INSTALL_TYPE" == "ref" ]]; then
+            echo "[asdf-erlang] ⚠️ Skipping setting --with-ssl in KERL_CONFIGURE_OPTIONS for ref install"
+            return
+        fi
+
+        otp_major=$(echo "$ASDF_INSTALL_VERSION" | cut -d. -f1)
+        otp_minor=$(echo "$ASDF_INSTALL_VERSION" | cut -d. -f2)
+
+        # Copied IF condition check from the kerl binary to match their version check.
+        # We only have to fix/handle newer erlang+openssl versions because of kerl looking for openssl@3.0 instead of openssl#3.
+        # The erlang version that use openssl 1.1 should be fine (or as is).
+        if [ "$otp_major" = 'git' ] || [ "$otp_major" -lt 25 ] || { [ "$otp_major" -eq 25 ] && [ "$otp_minor" -lt 1 ]; }; then
+            echo "[asdf-erlang] ⚠️ Skipping setting --with-ssl in KERL_CONFIGURE_OPTIONS. This erlang version uses openssl v1.x"
+            return
+        fi
+
+        # Only set the ssl option for newer erlang versions that use openssl@3.
+        if ! brew --prefix openssl@3 >/dev/null 2>&1; then
+            echo "[asdf-erlang] ⚠️ Skipping setting --with-ssl in KERL_CONFIGURE_OPTIONS. brew prefix path for openssl@3 not found."
+            return
+        fi
+
+        # If openssl is not already in KERL_CONFIGURE_OPTIONS, then add it.
+        if [[ ! "$KERL_CONFIGURE_OPTIONS" =~ openssl ]]; then
+            local kerl_ssl_opt
+            kerl_ssl_opt=" --with-ssl=$(brew --prefix openssl@3)"
+            export KERL_CONFIGURE_OPTIONS+=" $kerl_ssl_opt"
+            echo "[asdf-erlang] 🛟 Added openssl to KERL_CONFIGURE_OPTIONS: $kerl_ssl_opt"
+        fi
+    fi
+}
+
+cleanup_custom_env_vars() {
+    if [[ "${LDFLAGS_SET_BY_ASDF_ERLANG:-}" == "1" ]]; then
+        unset LDFLAGS
+    fi
+
+    if [[ "${CC_SET_BY_ASDF_ERLANG:-}" == "1" ]]; then
+        unset CC
+    fi
 }
 
 install_erlang
