@@ -48,7 +48,7 @@ install_erlang() {
     # We hide all output from this command so the
     # "You can activate this installation running the following command:"
     # that doesn't apply is hidden
-    echo "🧹 Cleanup kerl install $build_name $ASDF_INSTALL_PATH"
+    echo "👷🏼 kerl install $build_name $ASDF_INSTALL_PATH"
     $(kerl_path) install "$build_name" "$ASDF_INSTALL_PATH" >/dev/null 2>&1
 
     echo "🧹 Cleanup kerl build $build_name"
