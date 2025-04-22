@@ -155,11 +155,10 @@ ssh : No usable OpenSSL found
 ssl : No usable OpenSSL found
 ```
 
-This issue has been documented [on
-`kerl`](https://github.com/kerl/kerl#compiling-crypto-on-macs). If you see this
-error, you can use the `--with-ssl` flag with a path before installing Erlang. Here is
-an example that skips the java dependency and also sets a specific (and existing)
-path for OpenSSL installed via brew on macOS.
+This issue has been documented [on `kerl`](https://github.com/kerl/kerl/issues/320). If you see this
+error, you can use the [`--with-ssl`](https://github.com/asdf-vm/asdf-erlang/issues/82#issuecomment-415930974)
+flag with a path before installing Erlang. Here is an example that skips the java dependency and also sets a specific (and existing)
+path for [OpenSSL](https://github.com/kerl/kerl#kerl-and-openssl) installed via brew on macOS.
 
 ```
 export KERL_CONFIGURE_OPTIONS="--without-javac --with-ssl=$(brew --prefix openssl@1.1)"
@@ -287,8 +286,8 @@ or even embedded documentation (via `c:h` function)).
 
 For man pages this allows typing `erl -man ets` to get info on `ets` module.
 
-For embedded documentation (on [OTP 23\+](https://www.erlang.org/downloads/23.0)):
-- In Erlang's `erl`: via [`c:h/1,2,3`](https://erlang.org/doc/man/c.html#h-1) and [`c:ht/1,2,3`](https://erlang.org/doc/man/c.html#ht-1) for types
+For embedded documentation (on [OTP 23\+](https://www.erlang.org/downloads/23)):
+- In Erlang's `erl`: via [`c:h/1,2,3`](https://erlang.org/doc/man/c.html#h/1) and [`c:ht/1,2,3`](https://erlang.org/doc/man/c.html#ht/1) for types
 - In Elixir's `iex` (Elixir 1.7+): via [`h/1`](https://hexdocs.pm/iex/IEx.Helpers.html#h/1) and [`t/1`](https://hexdocs.pm/iex/IEx.Helpers.html#t/1) for types
 
 `asdf-erlang` uses kerl for builds, and [kerl](https://github.com/kerl/kerl) is
